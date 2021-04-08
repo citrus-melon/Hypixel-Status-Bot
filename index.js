@@ -1,7 +1,12 @@
 const Discord = require("discord.js");
 const https = require('https');
 const fs = require('fs');
+const commandManager = require('./commandManager');
+
 const client = new Discord.Client();
+client.commands = commandManager.loadCommandFiles('./commands');
+client.prefix = '!status';
+
 let notificationChannel, role, users;
 
 function getData(url) {
@@ -58,6 +63,8 @@ client.on('ready', async () => {
         console.error(error);
     }
 });
+
+client.on('message', commandManager.handleMessage);
 
 const rawData = fs.readFileSync('data.json');
 users = JSON.parse(rawData);
