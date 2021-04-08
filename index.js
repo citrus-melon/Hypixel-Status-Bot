@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const https = require('https');
+const getHTTPS = require("./getHTTPS");
 const fs = require('fs');
 const commandManager = require('./commandManager');
 
@@ -9,20 +9,9 @@ client.prefix = '!status';
 
 let notificationChannel, role, users;
 
-function getData(url) {
-    return new Promise(function(resolve, reject) {
-        const req = https.get(url, res => {
-            let data = '';
-            res.on('data', function(chunk) { data += chunk; });
-            res.on('end', function() { resolve(data); });
-        });
-        req.on('error', function(err) { reject(err); });
-    });
-};
-
 const loopStatuses = () => {
     users.forEach(async user => {
-        const rawData = await getData(`https://api.hypixel.net/status?key=${process.env.hypixelApiKey}&uuid=${user.mcUUID}`);
+        const rawData = await getHTTPS(`https://api.hypixel.net/status?key=${process.env.hypixelApiKey}&uuid=${user.mcUUID}`);
         const data = JSON.parse(rawData);
         if (data.success === false) {
             console.error("Hypixel Api Error: " + data.cause);
