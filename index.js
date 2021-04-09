@@ -1,52 +1,61 @@
 const Discord = require("discord.js");
 const getHTTPS = require("./getHTTPS");
-const fs = require('fs');
+const dataManager = require('./dataManager');
 const commandManager = require('./commandManager');
 
 const client = new Discord.Client();
 client.commands = commandManager.loadCommandFiles('./commands');
 client.prefix = '!status';
 
-let notificationChannel, role, users;
+/** @type {Discord.Guild} */ let guild;
+/** @type {Discord.Role} */ let role;
+
+const sendNotification = (username, mcID, online) => {
+    const notificationChannel = client.channels.cache.get(process.env.CHANNEL_ID);
+    const embed = new Discord.MessageEmbed();
+    if (online === true) {
+        embed.setColor('#91ff8f');
+        embed.setAuthor(username + ' is now online', 'https://crafatar.com/avatars/' + mcID)
+    } else {
+        embed.setColor('#ff8f8f')
+        embed.setAuthor(username + ' is now offline', 'https://crafatar.com/avatars/' + mcID)
+    }
+    notificationChannel.send(embed);
+}
+
+const updateRole = (member, online) => {
+    if (online) member.roles.add(role);
+    else member.roles.remove(role);
+}
 
 const loopStatuses = () => {
-    users.forEach(async user => {
-        const rawData = await getHTTPS(`https://api.hypixel.net/status?key=${process.env.hypixelApiKey}&uuid=${user.mcUUID}`);
-        const data = JSON.parse(rawData);
+    dataManager.trackedPlayers.each(async player => {
+        const response = await getHTTPS(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
+        const data = JSON.parse(response);
+        
         if (data.success === false) {
             console.error("Hypixel Api Error: " + data.cause);
             return;
         }
-        if (data.session.online != user.online) {
-            user.online = data.session.online;
-            let embed;
-            if (user.online) {
-                embed = new Discord.MessageEmbed()
-                    .setColor('#91ff8f')
-                    .setAuthor(user.member.displayName + ' is now online', 'https://crafatar.com/avatars/'+user.mcUUID)
-                user.member.roles.add(role);
-            } else {
-                embed = new Discord.MessageEmbed()
-                    .setColor('#ff8f8f')
-                    .setAuthor(user.member.displayName + ' is now offline', 'https://crafatar.com/avatars/'+user.mcUUID)
-                user.member.roles.remove(role);
-            }
-            notificationChannel.send(embed);
-        }
+        if (data.session.online === player.online) return;
+
+        const member = await guild.members.fetch(player.discordID);
+        console.log(`${member.displayName} state change to ${data.session.online}`)
+        sendNotification(member.displayName, player.mcID, data.session.online);
+        updateRole(member, data.session.online);
+        dataManager.setStatus(player.mcID, data.session.online);
     });
 }
 
 client.on('ready', async () => {
     try {
-        console.log(`Logged in as ${client.user.tag}!`)
-        const guild = await client.guilds.fetch(process.env.GUILD_ID);
-        notificationChannel = await client.channels.fetch(process.env.CHANNEL_ID);
+        console.log(`Logged in as ${client.user.tag}!`);
+        client.user.setActivity(`${dataManager.trackedPlayers.size} statuses`, { type: 'WATCHING' });
+
+        guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);
-        for (const user of users) {
-            user.member = await guild.members.fetch(user.discordID);
-            if(user.member.roles.cache.has(role.id)) user.online = true;
-        }
-        client.user.setActivity(`${users.length} statuses`, { type: 'WATCHING' });
+        
+        loopStatuses();
         setInterval(loopStatuses, 30000);
     } catch (error) {
         console.error(error);
@@ -55,6 +64,4 @@ client.on('ready', async () => {
 
 client.on('message', commandManager.handleMessage);
 
-const rawData = fs.readFileSync('data.json');
-users = JSON.parse(rawData);
 client.login(process.env.BOT_TOKEN);
