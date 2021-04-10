@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bent": "^7.3.12",
     "discord.js": "^12.5.1"
   },
   "devDependencies": {

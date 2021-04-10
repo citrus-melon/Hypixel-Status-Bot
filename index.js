@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const getHTTPS = require("./getHTTPS");
+const getJSON = require("bent")('json');
 const dataManager = require('./dataManager');
 const commandManager = require('./commandManager');
 
@@ -30,8 +30,7 @@ const updateRole = (member, online) => {
 
 const loopStatuses = () => {
     dataManager.trackedPlayers.each(async player => {
-        const response = await getHTTPS(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
-        const data = JSON.parse(response);
+        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
         
         if (data.success === false) {
             console.error("Hypixel Api Error: " + data.cause);
