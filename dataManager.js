@@ -33,8 +33,9 @@ const writeFile = () => {
 
 /** @param {Player} player */
 const trackPlayer = async (player) => {
-    if (trackedPlayers.has(player.discordID)) untrackPlayer(player.discordID);
-    trackedPlayers.set(mcID, player);
+    const sameDiscord = await getPlayerByDiscord(player.discordID)
+    if (sameDiscord) await untrackPlayer(sameDiscord.mcID);
+    trackedPlayers.set(player.mcID, player);
     writeFile();
 }
 

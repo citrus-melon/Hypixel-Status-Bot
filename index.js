@@ -32,17 +32,17 @@ const loopStatuses = () => {
     dataManager.trackedPlayers.each(async player => {
         const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
         
-        if (data.success === false) {
-            console.error("Hypixel Api Error: " + data.cause);
+        if (response.success === false) {
+            console.error("Hypixel Api Error: " + response.cause);
             return;
         }
-        if (data.session.online === player.online) return;
+        if (response.session.online === player.online) return;
 
         const member = await guild.members.fetch(player.discordID);
-        console.log(`${member.displayName} state change to ${data.session.online}`)
-        sendNotification(member.displayName, player.mcID, data.session.online);
-        updateRole(member, data.session.online);
-        dataManager.setStatus(player.mcID, data.session.online);
+        console.log(`${member.displayName} state change to ${response.session.online}`)
+        sendNotification(member.displayName, player.mcID, response.session.online);
+        updateRole(member, response.session.online);
+        dataManager.setStatus(player.mcID, response.session.online);
     });
 }
 
