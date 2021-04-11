@@ -1,5 +1,5 @@
-const { Collection} = require("discord.js"); // Collection is "A Map with additional utility methods."
-const fs = require("fs");
+const { Collection } = require('discord.js'); // Collection is 'A Map with additional utility methods.'
+const fs = require('fs');
 
 class Player {
     /**

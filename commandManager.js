@@ -13,17 +13,17 @@ const loadCommandFiles = (directory) => {
 
 /** @param {Discord.Message} message */
 const handleMessage = (message) => {
-    if(message.author.bot) return;
-    if(!message.content.startsWith(message.client.prefix)) return;
-    
-    const arguments = 
-    message.content.slice(message.client.prefix.length) // remove the prefix from the start
-    .replace(/\r?\n|\r/g, " ") // regexp that replaces newlines with spaces
-    .match(/"[^"]+"|[\S]+/g) // regexp sorcery that separates by spaces outside of quotes
-    .map(argument => argument.replace(/"/g, '')); // remove quotes from each argument
-    
+    if (message.author.bot) return;
+    if (!message.content.startsWith(message.client.prefix)) return;
+
+    const arguments = message.content
+        .slice(message.client.prefix.length) // remove the prefix from the start
+        .replace(/\r?\n|\r/g, ' ') // regexp that replaces newlines with spaces
+        .match(/"[^"]+"|[\S]+/g) // regexp sorcery that separates by spaces outside of quotes
+        .map(argument => argument.replace(/"/g, '')); // remove quotes from each argument
+
     const commandName = arguments.shift().toLowerCase();
-    
+
     const command = message.client.commands.find(cmd => cmd.names.includes(commandName));
     if (command) command.execute(message, arguments);
 }
