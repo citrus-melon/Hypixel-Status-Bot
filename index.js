@@ -9,6 +9,7 @@ client.prefix = '!status';
 
 /** @type {Discord.Guild} */ let guild;
 /** @type {Discord.Role} */ let role;
+/** @type {number} */ let lastTick;
 
 const sendNotification = (username, mcID, online) => {
     const notificationChannel = client.channels.cache.get(process.env.CHANNEL_ID);
@@ -29,6 +30,9 @@ const updateRole = (member, online) => {
 }
 
 const loopStatuses = () => {
+    const tickDelta = Math.floor((Date.now() - lastTick) / 60000);
+    lastTick += tickDelta * 60000;
+
     dataManager.trackedPlayers.each(async player => {
         const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
 
@@ -36,9 +40,12 @@ const loopStatuses = () => {
             console.error('Hypixel Api Error: ' + response.cause);
             return;
         }
-        if (response.session.online === player.online) return;
 
         const member = await guild.members.fetch(player.discordID);
+
+        if (response.session.online) dataManager.incrementTime(player.mcID, tickDelta);
+        
+        if (response.session.online === player.online) return;
         console.log(`${member.displayName} state change to ${response.session.online}`)
         sendNotification(member.displayName, player.mcID, response.session.online);
         updateRole(member, response.session.online);
@@ -53,6 +60,7 @@ client.on('ready', async () => {
 
         guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);
+        lastTick = Date.now();
 
         loopStatuses();
         setInterval(loopStatuses, 30000);

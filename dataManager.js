@@ -10,12 +10,16 @@ class Player {
         this.mcID = mcID;
         this.discordID = discordID;
         this.online = false;
+        /** @type {number}*/ this.creationDate = Date.now();
+        /** @type {number}*/ this.lastIncremented = Date.now();
+        /** @type {number[]}*/ this.dailyHistory = new Array(30).fill(0);
+        /** @type {number[]}*/ this.monthlyHistory = [0];
+        /** @type {number[]}*/ this.dailyTotals = [0, 0, 0, 0, 0, 0, 0];
     }
 }
 
 /** @type {Collection<string, Player>} */
 let trackedPlayers = new Collection(); // Stores all tracked players, essentially static
-
 if (fs.existsSync('data.json')) { // If saved data file exists, load it
     const fileContent = fs.readFileSync('data.json');
     const data = JSON.parse(fileContent);
@@ -49,6 +53,13 @@ const setStatus = async (mcID, status) => {
     writeFile();
 }
 
+const incrementTime = async (mcID, increment) => {
+    const player = trackedPlayers.get(mcID);
+    player.dailyHistory[0] += increment;
+    player.monthlyHistory[player.monthlyHistory.length] += increment;
+    writeFile();
+}
+
 const getPlayerByDiscord = async (discordID) => trackedPlayers.find(player => player.discordID == discordID);
 
 // Export public functions and variables
@@ -57,4 +68,5 @@ module.exports.trackPlayer = trackPlayer;
 module.exports.untrackPlayer = untrackPlayer;
 module.exports.getPlayerByDiscord = getPlayerByDiscord;
 module.exports.setStatus = setStatus;
+module.exports.incrementTime = incrementTime;
 module.exports.Player = Player;
