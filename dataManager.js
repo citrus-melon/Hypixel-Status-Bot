@@ -11,8 +11,8 @@ class Player {
         this.discordID = discordID;
         this.online = false;
         /** @type {number}*/ this.creationDate = Date.now();
-        /** @type {number}*/ this.lastIncremented = Date.now();
-        /** @type {number[]}*/ this.dailyHistory = new Array(30).fill(0);
+        /** @type {number}*/ this.lastIncremented = this.creationDate;
+        /** @type {number[]}*/ this.dailyHistory = new Array(30);
         /** @type {number[]}*/ this.monthlyHistory = [0];
         /** @type {number[]}*/ this.dailyTotals = [0, 0, 0, 0, 0, 0, 0];
     }
@@ -27,7 +27,7 @@ if (fs.existsSync('data.json')) { // If saved data file exists, load it
 }
 
 const writeFile = () => {
-    const fileContent = JSON.stringify(trackedPlayers.array(), 2);
+    const fileContent = JSON.stringify(trackedPlayers.array(), null, 2);
     fs.writeFile('data.json', fileContent, (err) => {
         if (err) console.log(err);
     });
@@ -53,10 +53,33 @@ const setStatus = async (mcID, status) => {
     writeFile();
 }
 
+/** @param {Player} player @param {Date} now */
+const tryChangeDays = async (player, now) => {
+    const dayDelta = now.getDate() - new Date(player.lastIncremented).getDate();
+    for (let index = 0; index < dayDelta; index++) {
+        player.dailyHistory.length++;
+        player.dailyHistory.shift();
+    }
+    if(!player.dailyHistory[player.dailyHistory.length-1]) player.dailyHistory[player.dailyHistory.length-1] = 0;
+
+    const monthDelta = now.getMonth() - new Date(player.lastIncremented).getMonth();
+    player.monthlyHistory.length += monthDelta;
+    if(!player.monthlyHistory[player.monthlyHistory.length-1]) player.monthlyHistory[player.monthlyHistory.length-1] = 0;
+
+    player.lastIncremented = now.getTime();
+    writeFile();
+    return player;
+}
+
 const incrementTime = async (mcID, increment) => {
+    const now = new Date();
     const player = trackedPlayers.get(mcID);
-    player.dailyHistory[0] += increment;
-    player.monthlyHistory[player.monthlyHistory.length] += increment;
+    await tryChangeDays(player, now);
+
+    player.dailyHistory[player.dailyHistory.length-1] += increment;
+    player.monthlyHistory[player.monthlyHistory.length-1] += increment;
+    player.dailyTotals[now.getDay()] += increment;
+
     writeFile();
 }
 
@@ -68,5 +91,6 @@ module.exports.trackPlayer = trackPlayer;
 module.exports.untrackPlayer = untrackPlayer;
 module.exports.getPlayerByDiscord = getPlayerByDiscord;
 module.exports.setStatus = setStatus;
+module.exports.tryChangeDays = tryChangeDays;
 module.exports.incrementTime = incrementTime;
 module.exports.Player = Player;
