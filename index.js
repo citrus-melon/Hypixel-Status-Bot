@@ -1,11 +1,26 @@
 const Discord = require('discord.js');
 const getJSON = require('bent')('json');
 const dataManager = require('./dataManager');
-const commandManager = require('./commandManager');
+const { CommandoClient } = require('discord.js-commando');
+const path = require('path');
 
-const client = new Discord.Client();
-client.commands = commandManager.loadCommandFiles('./commands');
-client.prefix = '!status';
+const client = new CommandoClient({
+    commandPrefix: 'h!',
+    owner: '711250473742499892',
+    invite: 'https://discord.gg/cuRGH6Pc4k',
+});
+
+client.registry
+    .registerDefaultTypes()
+    .registerGroups([
+        ['account', 'Account management and linking'],
+        ['stats', 'Basic playtime statistics'],
+        ['charts', 'Playtime statistic charts']
+    ])
+    .registerDefaultGroups()
+    .registerDefaultCommands()
+    .registerCommandsIn(path.join(__dirname, 'commands'));
+
 
 /** @type {Discord.Guild} */ let guild;
 /** @type {Discord.Role} */ let role;
@@ -53,7 +68,7 @@ const loopStatuses = () => {
     });
 }
 
-client.on('ready', async () => {
+client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
         client.user.setActivity(`${dataManager.trackedPlayers.size} statuses`, { type: 'WATCHING' });
@@ -68,7 +83,5 @@ client.on('ready', async () => {
         console.error(error);
     }
 });
-
-client.on('message', commandManager.handleMessage);
 
 client.login(process.env.BOT_TOKEN);

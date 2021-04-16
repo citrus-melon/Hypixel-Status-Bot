@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "bent": "^7.3.12",
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "github:discordjs/Commando"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
