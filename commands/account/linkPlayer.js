@@ -34,6 +34,16 @@ module.exports = class linkPlayer extends Command {
             message.reply(`${mcName} is not a valid Minecraft username!`);
             return;
         }
+
+        if (member != message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
+            return;
+        }
+
+        if (dataManager.trackedPlayers.has(mcID)) {
+            message.reply('That account has already been linked by someone else!');
+            return;
+        }
     
         try {
             const response = await getJSON('https://api.mojang.com/users/profiles/minecraft/' + mcName);

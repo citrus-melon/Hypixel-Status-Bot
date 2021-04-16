@@ -26,7 +26,12 @@ module.exports = class unlinkPlayer extends Command {
         const player = await dataManager.getPlayerByDiscord(discordID);
     
         if (!player) {
-            message.reply(`${target.tag} is already unlinked!`);
+            message.reply(`${target.tag} does not have a linked account!`);
+            return;
+        }
+
+        if (target != message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
     
