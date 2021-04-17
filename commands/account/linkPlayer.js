@@ -13,7 +13,7 @@ module.exports = class linkPlayer extends Command {
                 {
                     key: 'mcName',
                     prompt: 'What is your Minecraft username?',
-                    type: 'user',
+                    type: 'string',
                 },
                 {
                     key: 'member',
@@ -39,15 +39,14 @@ module.exports = class linkPlayer extends Command {
             message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
-
-        if (dataManager.trackedPlayers.has(mcID)) {
-            message.reply('That account has already been linked by someone else!');
-            return;
-        }
     
         try {
             const response = await getJSON('https://api.mojang.com/users/profiles/minecraft/' + mcName);
             const mcID = response.id;
+            if (dataManager.trackedPlayers.has(mcID)) {
+                message.reply('That account has already been linked by someone else!');
+                return;
+            }
             const player = new dataManager.Player(mcID, discordID);
             dataManager.trackPlayer(player);
             message.reply(`sucessfully linked ${member.tag} to ${mcName}!`)

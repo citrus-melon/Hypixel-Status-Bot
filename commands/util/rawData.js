@@ -24,12 +24,13 @@ module.exports = class rawData extends Command {
         const discordID = target.id;
 
         const player = await dataManager.getPlayerByDiscord(discordID);
-        await dataManager.tryChangeDays(player, new Date());
 
         if (!player) {
             message.reply(`${target.tag} doesn't have a linked Minecraft account!`);
             return;
         }
+        await dataManager.tryChangeDays(player, new Date());
+        
         message.reply('Raw data for ' + target.tag + ':```json\n' + JSON.stringify(player, null, 2) + '\n```');
     }
 };
