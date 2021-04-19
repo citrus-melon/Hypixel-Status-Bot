@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const getJSON = require('bent')('json');
 const dataManager = require('./dataManager');
+const playerHelpers = require('./playerHelpers');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 
@@ -44,34 +45,46 @@ const updateRole = (member, online) => {
     else member.roles.remove(role);
 }
 
-const loopStatuses = () => {
-    const tickDelta = Math.floor((Date.now() - lastTick) / 60000);
+const loopStatuses = async () => {
+    const now = new Date();
+    const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
     lastTick += tickDelta * 60000;
 
-    dataManager.trackedPlayers.each(async player => {
-        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player.mcID}`);
+    const players = await dataManager.getAll();
+    for (let [mcID, player] of players) {
 
+        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${mcID}`);
         if (response.success === false) {
             console.error('Hypixel Api Error: ' + response.cause);
             return;
         }
 
-        const member = await guild.members.fetch(player.discordID);
+        player = await playerHelpers.tryChangeDays(player, new Date());
 
-        if (response.session.online) dataManager.incrementTime(player.mcID, tickDelta);
+        if (response.session.online) {
+            player.dailyHistory[player.dailyHistory.length-1] += tickDelta;
+            player.monthlyHistory[player.monthlyHistory.length-1] += tickDelta;
+            player.dailyTotals[now.getDay()] += tickDelta;
+        }
         
-        if (response.session.online === player.online) return;
-        console.log(`${member.displayName} state change to ${response.session.online}`)
-        sendNotification(member.displayName, player.mcID, response.session.online);
-        updateRole(member, response.session.online);
-        dataManager.setStatus(player.mcID, response.session.online);
-    });
+        if (response.session.online !== player.online) {
+            const member = await guild.members.fetch(player.discordID);
+            player.online = response.session.online;
+            console.log(`${member.displayName} state change to ${response.session.online}`)
+            sendNotification(member.displayName, player.mcID, response.session.online);
+            updateRole(member, response.session.online);
+        }
+
+        if (!response.session.online && response.session.online !== player.online) return;
+
+        dataManager.set(mcID, player);
+    }
 }
 
 client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
-        client.user.setActivity(`${dataManager.trackedPlayers.size} statuses`, { type: 'WATCHING' });
+        client.user.setActivity(`${dataManager.list().length} statuses`, { type: 'WATCHING' });
 
         guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);

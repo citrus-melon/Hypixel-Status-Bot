@@ -23,7 +23,7 @@ module.exports = class unlinkPlayer extends Command {
     async run(message, { target }) {
         const discordID = target.id;
 
-        const player = await dataManager.getPlayerByDiscord(discordID);
+        const player = await dataManager.getByDiscord(discordID);
     
         if (!player) {
             message.reply(`${target.tag} does not have a linked account!`);
@@ -35,7 +35,7 @@ module.exports = class unlinkPlayer extends Command {
             return;
         }
     
-        dataManager.untrackPlayer(player.mcID);
+        dataManager.remove(player.mcID);
         message.reply(`Sucessfully unlinked ${target.tag}!`)
     }
 };

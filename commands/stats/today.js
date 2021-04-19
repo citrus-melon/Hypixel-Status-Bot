@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const dataManager = require('../../dataManager');
+const playerHelpers = require('../../playerHelpers');
 
 module.exports = class todayPlaytime extends Command {
     constructor(client) {
@@ -23,13 +24,13 @@ module.exports = class todayPlaytime extends Command {
     async run(message, { target }) {
         const discordID = target.id;
 
-        const player = await dataManager.getPlayerByDiscord(discordID);
+        let player = await dataManager.getByDiscord(discordID);
     
         if (!player) {
             message.reply(`${target.tag} doesn't have a linked Minecraft account!`);
             return;
         }
-        await dataManager.tryChangeDays(player, new Date());
+        player = playerHelpers.tryChangeDays(player, new Date());
         
         message.reply(`Today you/they have played for ${player.dailyHistory[player.dailyHistory.length-1]} minutes`);
     }

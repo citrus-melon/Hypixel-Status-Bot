@@ -23,7 +23,7 @@ module.exports = class lifetimePlaytime extends Command {
     async run(message, { target }) {
         const discordID = target.id;
 
-        const player = await dataManager.getPlayerByDiscord(discordID);
+        const player = await dataManager.getByDiscord(discordID);
     
         if (!player) {
             message.reply(`${target.tag} doesn't have a linked Minecraft account!`);

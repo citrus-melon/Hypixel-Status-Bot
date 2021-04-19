@@ -43,12 +43,12 @@ module.exports = class linkPlayer extends Command {
         try {
             const response = await getJSON('https://api.mojang.com/users/profiles/minecraft/' + mcName);
             const mcID = response.id;
-            if (dataManager.trackedPlayers.has(mcID)) {
+            if (dataManager.list().includes(mcID)) {
                 message.reply('That account has already been linked by someone else!');
                 return;
             }
             const player = new dataManager.Player(mcID, discordID);
-            dataManager.trackPlayer(player);
+            await dataManager.set(mcID, player);
             message.reply(`sucessfully linked ${member.tag} to ${mcName}!`)
         }
     
