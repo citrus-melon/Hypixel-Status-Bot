@@ -52,7 +52,7 @@ const loopStatuses = async () => {
 
     const players = await dataManager.getAll();
     for (let [mcID, player] of players) {
-
+        if(!player.discordID) return;
         const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${mcID}`);
         if (response.success === false) {
             console.error('Hypixel Api Error: ' + response.cause);

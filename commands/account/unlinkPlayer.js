@@ -30,12 +30,13 @@ module.exports = class unlinkPlayer extends Command {
             return;
         }
 
-        if (target != message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+        if (target !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
             message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
     
-        dataManager.remove(player.mcID);
+        player.discordID = null;
+        dataManager.set(player.mcID, player);
         message.reply(`Sucessfully unlinked ${target.tag}!`)
     }
 };
