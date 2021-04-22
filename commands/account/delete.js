@@ -9,14 +9,14 @@ module.exports = class ClassName extends Command {
             name: 'deletedata',
             group: 'account',
             memberName: 'delete',
-            description: 'PERMANANTLY delete all data associated with a Minecraft account',
+            description: 'PERMANANTLY delete all data associated with a player',
             userPermissions: ['ADMINISTRATOR'],
             args: [
                 {
                     key: 'account',
-                    prompt: 'What is the Minecraft username or discord member you would like to clear data from?',
-                    type: 'mention|minecraftaccount',
-                    default: message => message.author
+                    label: 'player',
+                    prompt: 'What player would you like to delete data from? Enter a Minecraft username or mention a Discord user',
+                    type: 'mention|minecraftaccount'
                 }
             ]
         })

@@ -8,16 +8,18 @@ module.exports = class linkPlayer extends Command {
             name: 'link',
             group: 'account',
             memberName: 'link',
-            description: 'Link a minecraft account to a discord account',
+            description: 'Link a Minecraft account to a Discord account',
             args: [
                 {
-                    key: 'mcName',
-                    prompt: 'What is your Minecraft username?',
+                    key: 'mcAccount',
+                    label: 'Minecraft Username',
+                    prompt: 'What is the username of the Minecraft account you would like to link?',
                     type: 'minecraftaccount',
                 },
                 {
-                    key: 'member',
-                    prompt: 'Which discord account would you like to link this account to?',
+                    key: 'discordAccount',
+                    label: 'Discord account',
+                    prompt: 'Which Discord user would you like to link this account to?',
                     type: 'user',
                     default: message => message.author
                 }
@@ -26,16 +28,16 @@ module.exports = class linkPlayer extends Command {
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { member, mcName }) {
-        if (member !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+    async run(message, { discordAccount, mcAccount }) {
+        if (discordAccount !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
             message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
 
-        const discordID = member.id;
+        const discordID = discordAccount.id;
 
-        let player = await dataManager.getByMinecraft(mcName);
-        if (!player) player = new dataManager.Player(mcName, discordID);
+        let player = await dataManager.getByMinecraft(mcAccount);
+        if (!player) player = new dataManager.Player(mcAccount, discordID);
 
         else if (!player.discordID) player.discordID = discordID;
 
@@ -45,7 +47,7 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
-        await dataManager.set(mcName, player);
-        message.reply(`sucessfully linked ${member.tag} to ${await usernameCache.getUsernameByID(mcName)}!`)
+        await dataManager.set(mcAccount, player);
+        message.reply(`sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
     }
 };

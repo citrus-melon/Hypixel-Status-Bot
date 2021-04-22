@@ -7,11 +7,12 @@ module.exports = class todayPlaytime extends Command {
             name: 'today',
             group: 'stats',
             memberName: 'today',
-            description: 'Get total playtime since midnight for the current day',
+            description: 'Get a player\'s total tracked playtime today, since midnight',
             args: [
                 {
                     key: 'account',
-                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    label: 'player',
+                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

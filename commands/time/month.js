@@ -7,11 +7,12 @@ module.exports = class thisMonthPlaytime extends Command {
             name: 'monthtotal',
             group: 'stats',
             memberName: 'month',
-            description: 'Get total playtime for the current month',
+            description: 'Get a player\'s total tracked playtime of a player this month',
             args: [
                 {
                     key: 'account',
-                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    label: 'player',
+                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

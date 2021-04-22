@@ -8,11 +8,12 @@ module.exports = class rawData extends Command {
             name: 'rawdata',
             group: 'util',
             memberName: 'data',
-            description: 'Get all data associated with an account, in json form',
+            description: 'Get all data associated with a player, in JSON form',
             args: [
                 {
                     key: 'account',
-                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    label: 'player',
+                    prompt: 'What player would you like to get the data of? Enter a Minecraft username or mention a Discord user',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

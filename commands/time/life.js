@@ -7,11 +7,12 @@ module.exports = class lifetimePlaytime extends Command {
             name: 'lifetime',
             group: 'stats',
             memberName: 'life',
-            description: 'Get total playtime from all time that this user was tracked',
+            description: 'Get a player\'s total lifetime tracked playtime',
             args: [
                 {
                     key: 'account',
-                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    label: 'player',
+                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

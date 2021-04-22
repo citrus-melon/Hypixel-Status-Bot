@@ -8,11 +8,12 @@ module.exports = class unlinkPlayer extends Command {
             name: 'unlink',
             group: 'account',
             memberName: 'unlink',
-            description: 'Unlink a minecraft account from a discord account',
+            description: 'Unlink a Minecraft account from a Discord account',
             args: [
                 {
-                    key: 'target',
-                    prompt: 'Who would you like to unlink?',
+                    key: 'discordAccount',
+                    name: 'Discord account',
+                    prompt: 'Which Discord user would you like to unlink?',
                     type: 'user',
                     default: message => message.author
                 },
@@ -21,21 +22,21 @@ module.exports = class unlinkPlayer extends Command {
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { target }) {
-        if (target !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+    async run(message, { discordAccount }) {
+        if (discordAccount !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
             message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
 
-        const player = await dataManager.getByDiscord(target.id);
+        const player = await dataManager.getByDiscord(discordAccount.id);
     
         if (!player) {
-            message.reply(`${target.tag} does not have a linked account!`);
+            message.reply(`${discordAccount.tag} does not have a linked account!`);
             return;
         }
     
         player.discordID = null;
         dataManager.set(player.mcID, player);
-        message.reply(`Sucessfully unlinked ${target.tag} from ${await usernameCache.getUsernameByID(player.mcID)}!`)
+        message.reply(`Sucessfully unlinked ${discordAccount.tag} from ${await usernameCache.getUsernameByID(player.mcID)}!`)
     }
 };
