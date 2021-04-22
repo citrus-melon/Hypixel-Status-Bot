@@ -9,6 +9,7 @@ module.exports = class unlinkPlayer extends Command {
             group: 'account',
             memberName: 'unlink',
             description: 'Unlink a Minecraft account from a Discord account',
+            examples: ['unlink', 'unlink @citrus-melon'],
             args: [
                 {
                     key: 'discordAccount',

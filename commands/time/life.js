@@ -8,6 +8,7 @@ module.exports = class lifetimePlaytime extends Command {
             group: 'stats',
             memberName: 'life',
             description: 'Get a player\'s total lifetime tracked playtime',
+            examples: ['lifetime', 'lifetime citrus_melon', 'lifetime @citrus-melon'],
             args: [
                 {
                     key: 'account',

@@ -8,6 +8,7 @@ module.exports = class todayPlaytime extends Command {
             group: 'stats',
             memberName: 'today',
             description: 'Get a player\'s total tracked playtime today, since midnight',
+            examples: ['today', 'today citrus_melon', 'today @citrus-melon'],
             args: [
                 {
                     key: 'account',

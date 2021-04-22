@@ -10,6 +10,7 @@ module.exports = class ClassName extends Command {
             group: 'account',
             memberName: 'delete',
             description: 'PERMANANTLY delete all data associated with a player',
+            examples: ['deletedata citrus_melon', 'deletedata @citrus-melon'],
             userPermissions: ['ADMINISTRATOR'],
             args: [
                 {
