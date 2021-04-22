@@ -58,7 +58,7 @@ const loopStatuses = async () => {
             return;
         }
 
-        player = await playerHelpers.tryChangeDays(player, new Date());
+        player = playerHelpers.tryChangeDays(player, new Date());
 
         if (response.session.online) {
             player.dailyHistory[player.dailyHistory.length-1] += tickDelta;

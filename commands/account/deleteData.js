@@ -1,6 +1,7 @@
 const {Command} = require('discord.js-commando');
 const dataManager = require('../../dataManager');
-const getJSON = require('bent')('json');
+const playerHelpers = require('../../playerHelpers');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class ClassName extends Command {
     constructor(client) {
@@ -12,39 +13,23 @@ module.exports = class ClassName extends Command {
             userPermissions: ['ADMINISTRATOR'],
             args: [
                 {
-                    key: 'mcName',
-                    prompt: 'What the username of the account you would like to wipe?',
-                    type: 'string',
+                    key: 'account',
+                    prompt: 'What is the Minecraft username or discord member you would like to clear data from?',
+                    type: 'mention|minecraftaccount',
+                    default: message => message.author
                 }
             ]
         })
     }
 
-    async run(message, {mcName}) {
-        const validUsername = /^\w{3,16}$/i;
-        if (!mcName || !validUsername.test(mcName)) {
-            message.reply(`${mcName} is not a valid Minecraft username!`);
+    async run(message, { account }) {
+        const player = await playerHelpers.getDiscordOrMinecraft(account);
+        if (typeof player === 'string') {
+            message.reply(player);
             return;
         }
 
-        try {
-            const response = await getJSON('https://api.mojang.com/users/profiles/minecraft/' + mcName);
-            const mcID = response.id;
-
-            if (!await dataManager.list().includes(mcID)) {
-                message.reply('There is no data associated with that account!');
-                return;
-            }
-
-            await dataManager.remove(mcID);
-            message.reply(`The data associated with ${mcName} has been permanantly deleted!`)
-        }
-    
-        catch (error) {
-            if (error.name === 'StatusError' && error.statusCode === 204) {
-                message.reply(`couldn't find a Minecraft player with the username ${mcName}!`)
-            }
-            else throw error;
-        }
+        await dataManager.remove(player.mcID);
+        message.reply(`The data associated with the Minecraft account \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
     }
 }

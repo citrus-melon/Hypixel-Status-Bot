@@ -1,8 +1,9 @@
-const {Player} = require('./dataManager');
+const dataManager = require('./dataManager');
+const usernameCache = require('./usernameCache');
 
-/** @param {Player} input */
+/** @param {dataManager.Player} input */
 const clonePlayer = (input) => {
-    return new Player(
+    return new dataManager.Player(
         input.mcID,
         input.discordID,
         input.online,
@@ -14,7 +15,7 @@ const clonePlayer = (input) => {
     );
 };
 
-/** @param {Player} player @param {Date} now */
+/** @param {dataManager.Player} player @param {Date} now */
 const tryChangeDays = (player, now) => {
     player = clonePlayer(player);
     const dayDelta = now.getDate() - new Date(player.lastIncremented).getDate();
@@ -32,6 +33,17 @@ const tryChangeDays = (player, now) => {
     return player;
 };
 
+const getDiscordOrMinecraft = async (input) => {
+    const player = typeof input === 'string' ? await dataManager.getByMinecraft(input) : await dataManager.getByDiscord(input.id);
+    if (!player && typeof input === 'string') {
+        return `There is no data associated with the Minecraft account \`${await usernameCache.getUsernameByID(input)}\`!`;
+    } else if (!player) {
+        return`\`${input.tag}\` does not have a linked Minecraft account!`;
+    }
+    return player;
+}
+
 module.exports = {
-    tryChangeDays: tryChangeDays
+    tryChangeDays: tryChangeDays,
+    getDiscordOrMinecraft: getDiscordOrMinecraft
 };

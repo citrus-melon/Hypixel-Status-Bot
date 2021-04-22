@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
 const playerHelpers = require('../../playerHelpers');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class rawData extends Command {
     constructor(client) {
@@ -11,27 +11,23 @@ module.exports = class rawData extends Command {
             description: 'Get all data associated with an account, in json form',
             args: [
                 {
-                    key: 'target',
-                    prompt: 'Whoose data would you like to get?',
-                    type: 'user',
+                    key: 'account',
+                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    type: 'mention|minecraftaccount',
                     default: message => message.author
-                },
+                }
             ]
         });
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { target }) {
-        const discordID = target.id;
-
-        let player = await dataManager.getByDiscord(discordID);
-    
-        if (!player) {
-            message.reply(`${target.tag} doesn't have a linked Minecraft account!`);
+    async run(message, { account }) {
+        const player = await playerHelpers.getDiscordOrMinecraft(account);
+        if (typeof player === 'string') {
+            message.reply(player);
             return;
         }
-        player = playerHelpers.tryChangeDays(player, new Date());
         
-        message.reply('Raw data for ' + target.tag + ':```json\n' + JSON.stringify(player, null, 2) + '\n```');
+        message.reply('Raw data for ' + await usernameCache.getUsernameByID(player.mcID) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
     }
 };

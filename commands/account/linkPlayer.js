@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
-const getJSON = require('bent')('json');
 const dataManager = require('../../dataManager');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class linkPlayer extends Command {
     constructor(client) {
@@ -13,7 +13,7 @@ module.exports = class linkPlayer extends Command {
                 {
                     key: 'mcName',
                     prompt: 'What is your Minecraft username?',
-                    type: 'string',
+                    type: 'minecraftaccount',
                 },
                 {
                     key: 'member',
@@ -27,46 +27,25 @@ module.exports = class linkPlayer extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { member, mcName }) {
-        const discordID = member.id;
-
-        const validUsername = /^\w{3,16}$/i;
-        if (!mcName || !validUsername.test(mcName)) {
-            message.reply(`${mcName} is not a valid Minecraft username!`);
-            return;
-        }
-
         if (member !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
             message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
             return;
         }
-    
-        try {
-            const response = await getJSON('https://api.mojang.com/users/profiles/minecraft/' + mcName);
-            const mcID = response.id;
 
-            let player = await dataManager.getByMinecraft(mcID);
+        const discordID = member.id;
 
-            if (!player) {
-                player = new dataManager.Player(mcID, discordID);
-            }
+        let player = await dataManager.getByMinecraft(mcName);
+        if (!player) player = new dataManager.Player(mcName, discordID);
 
-            else if (!player.discordID) player.discordID = discordID;
+        else if (!player.discordID) player.discordID = discordID;
 
-            else {
-                if (player.discordID !== discordID) message.reply('That account has already been linked by someone else!');
-                else message.reply('Those accounts are already linked!');
-                return;
-            }
-
-            await dataManager.set(mcID, player);
-            message.reply(`sucessfully linked ${member.tag} to ${mcName}!`)
+        else {
+            if (player.discordID !== discordID) message.reply('That account has already been linked by someone else!');
+            else message.reply('Those accounts are already linked!');
+            return;
         }
-    
-        catch (error) {
-            if (error.name === 'StatusError' && error.statusCode === 204) {
-                message.reply(`couldn't find a Minecraft player with the username ${mcName}!`)
-            }
-            else throw error;
-        }
+
+        await dataManager.set(mcName, player);
+        message.reply(`sucessfully linked ${member.tag} to ${await usernameCache.getUsernameByID(mcName)}!`)
     }
 };

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerHelpers = require('../../playerHelpers');
 
 module.exports = class lifetimePlaytime extends Command {
     constructor(client) {
@@ -10,23 +10,20 @@ module.exports = class lifetimePlaytime extends Command {
             description: 'Get total playtime from all time that this user was tracked',
             args: [
                 {
-                    key: 'target',
-                    prompt: 'Whoose stats would you like to get?',
-                    type: 'user',
+                    key: 'account',
+                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    type: 'mention|minecraftaccount',
                     default: message => message.author
-                },
+                }
             ]
         });
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { target }) {
-        const discordID = target.id;
-
-        const player = await dataManager.getByDiscord(discordID);
-    
-        if (!player) {
-            message.reply(`${target.tag} doesn't have a linked Minecraft account!`);
+    async run(message, { account }) {
+        const player = await playerHelpers.getDiscordOrMinecraft(account);
+        if (typeof player === 'string') {
+            message.reply(player);
             return;
         }
     

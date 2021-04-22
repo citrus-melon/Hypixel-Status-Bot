@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const dataManager = require('../../dataManager');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class unlinkPlayer extends Command {
     constructor(client) {
@@ -21,22 +22,20 @@ module.exports = class unlinkPlayer extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { target }) {
-        const discordID = target.id;
+        if (target !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
+            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
+            return;
+        }
 
-        const player = await dataManager.getByDiscord(discordID);
+        const player = await dataManager.getByDiscord(target.id);
     
         if (!player) {
             message.reply(`${target.tag} does not have a linked account!`);
             return;
         }
-
-        if (target !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
-            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
-            return;
-        }
     
         player.discordID = null;
         dataManager.set(player.mcID, player);
-        message.reply(`Sucessfully unlinked ${target.tag}!`)
+        message.reply(`Sucessfully unlinked ${target.tag} from ${await usernameCache.getUsernameByID(player.mcID)}!`)
     }
 };

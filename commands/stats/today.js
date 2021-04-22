@@ -1,5 +1,4 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
 const playerHelpers = require('../../playerHelpers');
 
 module.exports = class todayPlaytime extends Command {
@@ -11,27 +10,25 @@ module.exports = class todayPlaytime extends Command {
             description: 'Get total playtime since midnight for the current day',
             args: [
                 {
-                    key: 'target',
-                    prompt: 'Whoose stats would you like to get?',
-                    type: 'user',
+                    key: 'account',
+                    prompt: 'What is the Minecraft username or discord account of the player?',
+                    type: 'mention|minecraftaccount',
                     default: message => message.author
-                },
+                }
             ]
         });
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { target }) {
-        const discordID = target.id;
-
-        let player = await dataManager.getByDiscord(discordID);
-    
-        if (!player) {
-            message.reply(`${target.tag} doesn't have a linked Minecraft account!`);
+    async run(message, { account }) {
+        const player = await playerHelpers.getDiscordOrMinecraft(account);
+        if (typeof player === 'string') {
+            message.reply(player);
             return;
         }
-        player = playerHelpers.tryChangeDays(player, new Date());
+
+        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
         
-        message.reply(`Today you/they have played for ${player.dailyHistory[player.dailyHistory.length-1]} minutes`);
+        message.reply(`Today you has played for ${adjustedPlayer.dailyHistory[adjustedPlayer.dailyHistory.length-1]} minutes`);
     }
 };
