@@ -6,7 +6,7 @@ module.exports = class lifetimePlaytime extends Command {
     constructor(client) {
         super(client, {
             name: 'lifetime',
-            group: 'stats',
+            group: 'time',
             memberName: 'life',
             description: 'Get a player\'s total lifetime tracked playtime',
             examples: ['lifetime', 'lifetime citrus_melon', 'lifetime @citrus-melon'],

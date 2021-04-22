@@ -6,7 +6,7 @@ module.exports = class thisMonthPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: 'monthtotal',
-            group: 'stats',
+            group: 'time',
             memberName: 'month',
             description: 'Get a player\'s total tracked playtime of a player this month',
             examples: ['monthtotal', 'monthtotal citrus_melon', 'monthtotal @citrus-melon'],
