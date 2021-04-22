@@ -10,6 +10,7 @@ module.exports = class lifetimePlaytime extends Command {
             memberName: 'life',
             description: 'Get a player\'s total lifetime tracked playtime',
             examples: ['lifetime', 'lifetime citrus_melon', 'lifetime @citrus-melon'],
+            throttling: {duration: 10, usages: 5},
             args: [
                 {
                     key: 'account',

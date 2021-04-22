@@ -10,6 +10,7 @@ module.exports = class linkPlayer extends Command {
             memberName: 'link',
             description: 'Link a Minecraft account to a Discord account',
             examples: ['link citrus_melon', 'link citrus_melon @citrus-melon'],
+            throttling: {duration: 180, usages: 1},
             args: [
                 {
                     key: 'mcAccount',

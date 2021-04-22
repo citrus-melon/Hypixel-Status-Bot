@@ -10,6 +10,7 @@ module.exports = class thisMonthPlaytime extends Command {
             memberName: 'month',
             description: 'Get a player\'s total tracked playtime of a player this month',
             examples: ['monthtotal', 'monthtotal citrus_melon', 'monthtotal @citrus-melon'],
+            throttling: {duration: 10, usages: 5},
             args: [
                 {
                     key: 'account',
