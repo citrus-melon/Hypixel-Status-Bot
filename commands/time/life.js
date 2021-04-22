@@ -1,14 +1,13 @@
 const { Command } = require('discord.js-commando');
 const playerHelpers = require('../../playerHelpers');
-const usernameCache = require('../../usernameCache');
 
-module.exports = class rawData extends Command {
+module.exports = class lifetimePlaytime extends Command {
     constructor(client) {
         super(client, {
-            name: 'rawdata',
-            group: 'util',
-            memberName: 'rawdata',
-            description: 'Get all data associated with an account, in json form',
+            name: 'lifetime',
+            group: 'stats',
+            memberName: 'life',
+            description: 'Get total playtime from all time that this user was tracked',
             args: [
                 {
                     key: 'account',
@@ -27,7 +26,12 @@ module.exports = class rawData extends Command {
             message.reply(player);
             return;
         }
-        
-        message.reply('Raw data for ' + await usernameCache.getUsernameByID(player.mcID) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
+    
+        let sum = 0;
+        for (const day of player.dailyTotals) {
+            sum += day;
+        }
+    
+        message.reply(`You have played a total of ${sum} minutes while tracked!`);
     }
 };

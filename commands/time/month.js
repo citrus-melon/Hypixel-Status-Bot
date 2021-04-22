@@ -6,7 +6,7 @@ module.exports = class thisMonthPlaytime extends Command {
         super(client, {
             name: 'monthtotal',
             group: 'stats',
-            memberName: 'monthtotal',
+            memberName: 'month',
             description: 'Get total playtime for the current month',
             args: [
                 {
