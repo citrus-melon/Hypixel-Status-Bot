@@ -12,14 +12,13 @@ const client = new CommandoClient({
 });
 
 client.registry
-    .registerDefaultTypes()
+    .registerDefaults()
     .registerGroups([
         ['account', 'Account management and linking'],
         ['stats', 'Basic playtime statistics'],
         ['charts', 'Playtime statistic charts']
     ])
-    .registerDefaultGroups()
-    .registerDefaultCommands()
+    .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 
