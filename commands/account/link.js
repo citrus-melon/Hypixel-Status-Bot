@@ -38,13 +38,18 @@ module.exports = class linkPlayer extends Command {
 
         const discordID = discordAccount.id;
 
+        if (await dataManager.getByDiscord(discordID)) {
+            message.reply('You already have a linked Minecraft account!');
+            return;
+        }
+
         let player = await dataManager.getByMinecraft(mcAccount);
         if (!player) player = new dataManager.Player(mcAccount, discordID);
 
         else if (!player.discordID) player.discordID = discordID;
 
         else {
-            if (player.discordID !== discordID) message.reply('That account has already been linked by someone else!');
+            if (player.discordID !== discordID) message.reply('That Minecraft account has already been linked by someone else!');
             else message.reply('Those accounts are already linked!');
             return;
         }
