@@ -36,7 +36,7 @@ const tryChangeDays = (player, now) => {
 const getDiscordOrMinecraft = async (input) => {
     const player = typeof input === 'string' ? await dataManager.getByMinecraft(input) : await dataManager.getByDiscord(input.id);
     if (!player && typeof input === 'string') {
-        return `There is no data associated with the Minecraft account \`${await usernameCache.getUsernameByID(input)}\`!`;
+        return `The player \`${await usernameCache.getUsernameByID(input)}\` does not have any tracked data!`;
     } else if (!player) {
         return`\`${input.tag}\` does not have a linked Minecraft account!`;
     }

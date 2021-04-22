@@ -49,6 +49,6 @@ module.exports = class linkPlayer extends Command {
         }
 
         await dataManager.set(mcAccount, player);
-        message.reply(`sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
+        message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
     }
 };

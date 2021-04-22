@@ -31,6 +31,6 @@ module.exports = class ClassName extends Command {
         }
 
         await dataManager.remove(player.mcID);
-        message.reply(`The data associated with the Minecraft account \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
+        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
     }
 }

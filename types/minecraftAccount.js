@@ -11,7 +11,7 @@ class MinecraftAccountArgumentType extends ArgumentType {
         if (!validUsername.test(val)) return false;
 
         const id = await usernameCache.getIDByUsername(val, true);
-        if(!id) return `Couldn't find a player with that username.`;
+        if(!id) return `Couldn't find a player with that username! Please try again.`;
         return true;
     }
 

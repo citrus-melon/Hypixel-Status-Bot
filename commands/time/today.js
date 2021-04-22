@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const playerHelpers = require('../../playerHelpers');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class todayPlaytime extends Command {
     constructor(client) {
@@ -31,6 +32,6 @@ module.exports = class todayPlaytime extends Command {
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
         
-        message.reply(`Today you has played for ${adjustedPlayer.dailyHistory[adjustedPlayer.dailyHistory.length-1]} minutes`);
+        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played *${sum} minutes* in total today!`);
     }
 };

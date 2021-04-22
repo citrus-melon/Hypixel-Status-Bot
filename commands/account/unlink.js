@@ -38,6 +38,6 @@ module.exports = class unlinkPlayer extends Command {
     
         player.discordID = null;
         dataManager.set(player.mcID, player);
-        message.reply(`Sucessfully unlinked ${discordAccount.tag} from ${await usernameCache.getUsernameByID(player.mcID)}!`)
+        message.reply(`Sucessfully unlinked ${await usernameCache.getUsernameByID(player.mcID)} from ${discordAccount.tag}!`)
     }
 };

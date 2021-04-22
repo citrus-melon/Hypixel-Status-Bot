@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const playerHelpers = require('../../playerHelpers');
+const usernameCache = require('../../usernameCache');
 
 module.exports = class lifetimePlaytime extends Command {
     constructor(client) {
@@ -34,6 +35,6 @@ module.exports = class lifetimePlaytime extends Command {
             sum += day;
         }
     
-        message.reply(`You have played a total of ${sum} minutes while tracked!`);
+        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played *${sum} minutes* in total while tracked!`);
     }
 };
