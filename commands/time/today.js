@@ -33,6 +33,6 @@ module.exports = class todayPlaytime extends Command {
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
         
-        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played *${sum} minutes* in total today!`);
+        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played **${adjustedPlayer.dailyHistory[29]} minutes** in total today!`);
     }
 };

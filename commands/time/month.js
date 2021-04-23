@@ -33,6 +33,6 @@ module.exports = class thisMonthPlaytime extends Command {
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
         
-        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played *${sum} minutes* in total this month!`);
+        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played **${adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length - 1]} minutes** in total this month!`);
     }
 };

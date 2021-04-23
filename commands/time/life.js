@@ -36,6 +36,6 @@ module.exports = class lifetimePlaytime extends Command {
             sum += day;
         }
     
-        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played *${sum} minutes* in total while tracked!`);
+        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played **${sum} minutes** in total while tracked!`);
     }
 };
