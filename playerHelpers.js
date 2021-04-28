@@ -20,13 +20,15 @@ const tryChangeDays = (player, now) => {
     player = clonePlayer(player);
     const dayDelta = now.getDate() - new Date(player.lastIncremented).getDate();
     for (let index = 0; index < dayDelta; index++) {
-        player.dailyHistory.length++;
+        player.dailyHistory.push(null);
         player.dailyHistory.shift();
     }
     if(!player.dailyHistory[player.dailyHistory.length-1]) player.dailyHistory[player.dailyHistory.length-1] = 0;
 
     const monthDelta = now.getMonth() - new Date(player.lastIncremented).getMonth();
-    player.monthlyHistory.length += monthDelta;
+    for (let index = 0; index < dayDelta; index++) {
+        player.dailyHistory.push(null);
+    }
     if(!player.monthlyHistory[player.monthlyHistory.length-1]) player.monthlyHistory[player.monthlyHistory.length-1] = 0;
 
     player.lastIncremented = now.getTime();

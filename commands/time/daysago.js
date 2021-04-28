@@ -42,7 +42,7 @@ module.exports = class todayPlaytime extends Command {
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
         const result = adjustedPlayer.dailyHistory[29-daysAgo];
 
-        if (result === undefined || result === null) message.reply(`${await usernameCache.getUsernameByID(player.mcID)} wasn't tracked on that day!`);
+        if (result === null) message.reply(`${await usernameCache.getUsernameByID(player.mcID)} wasn't tracked on that day!`);
         else message.reply(`${await usernameCache.getUsernameByID(player.mcID)} played **${result} minutes** in total ${daysAgo} days ago!`);
     }
 };
