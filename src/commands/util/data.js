@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const playerHelpers = require('../../playerHelpers');
+const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
 module.exports = class rawData extends Command {

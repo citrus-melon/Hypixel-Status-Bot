@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const getJSON = require('bent')('json');
 const dataManager = require('./dataManager');
-const playerHelpers = require('./playerHelpers');
+const playerHelpers = require('./helpers/playerHelpers');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 

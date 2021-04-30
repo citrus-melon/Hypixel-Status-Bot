@@ -1,5 +1,5 @@
-const dataManager = require('./dataManager');
-const usernameCache = require('./usernameCache');
+const dataManager = require('../dataManager');
+const usernameCache = require('../usernameCache');
 
 /** @param {dataManager.Player} input */
 const clonePlayer = (input) => {
