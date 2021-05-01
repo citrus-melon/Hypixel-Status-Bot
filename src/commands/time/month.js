@@ -1,6 +1,8 @@
+const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
+const friendlyDuration = require('../../helpers/friendlyDuration');
 
 module.exports = class thisMonthPlaytime extends Command {
     constructor(client) {
@@ -32,7 +34,16 @@ module.exports = class thisMonthPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        
-        message.reply(`${await usernameCache.getUsernameByID(player.mcID)} has played **${adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length - 1]} minutes** in total this month!`);
+        const username = await usernameCache.getUsernameByID(player.mcID);
+        const value = adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length-1];
+        const embed = new MessageEmbed();
+
+        embed.setDescription(`${username} has played for **${friendlyDuration(value)}** in total this month!`);
+
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setTitle(`${username}'s total playtime by weekday`);
+        embed.setFooter('(Only while tracked)');
+        embed.setTimestamp(player.lastIncremented);
+        message.embed(embed);
     }
 };

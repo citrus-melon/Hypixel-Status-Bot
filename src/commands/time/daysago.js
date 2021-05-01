@@ -1,4 +1,6 @@
+const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
+const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
@@ -40,9 +42,18 @@ module.exports = class todayPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const result = adjustedPlayer.dailyHistory[29-daysAgo];
+        const username = await usernameCache.getUsernameByID(player.mcID);
+        const value = adjustedPlayer.dailyHistory[29-daysAgo];
+        
+        const embed = new MessageEmbed();
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setTitle(`${username}'s playtime today`);
+        embed.setFooter('(Only while tracked)');
+        embed.setTimestamp(player.lastIncremented);
 
-        if (result === null) message.reply(`${await usernameCache.getUsernameByID(player.mcID)} wasn't tracked on that day!`);
-        else message.reply(`${await usernameCache.getUsernameByID(player.mcID)} played **${result} minutes** in total ${daysAgo} days ago!`);
+        if (value === null) embed.setDescription(`${username} wasn't tracked ${daysAgo} days ago!`);
+        else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${daysAgo} days ago!`);
+
+        message.embed(embed);
     }
 };

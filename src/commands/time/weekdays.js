@@ -1,6 +1,10 @@
+const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
+const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
+
+const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 module.exports = class lifetimePlaytime extends Command {
     constructor(client) {
@@ -30,20 +34,23 @@ module.exports = class lifetimePlaytime extends Command {
             message.reply(player);
             return;
         }
-    
+
+        const username = await usernameCache.getUsernameByID(player.mcID);
+        const embed = new MessageEmbed();
         let sum = 0;
-        for (const day of player.dailyTotals) sum += day;
-    
-        message.reply(
-`**Total playtime by weekday for ${await usernameCache.getUsernameByID(player.mcID)}:**
-Sundays: **${player.dailyTotals[0]}**
-Mondays: **${player.dailyTotals[1]}**
-Tuesdays: **${player.dailyTotals[2]}**
-Wednesdays: **${player.dailyTotals[3]}**
-Thursdays: **${player.dailyTotals[4]}**
-Fridays: **${player.dailyTotals[5]}**
-Saturdays: **${player.dailyTotals[6]}**
-Total: **${sum}**`
-        );
+
+        for (let index = 0; index < player.dailyTotals.length; index++) {
+            const value = player.dailyTotals[index];
+            sum += value;
+            embed.addField(WEEKDAY_NAMES[index] + 's', friendlyDuration(value));
+        }
+
+        embed.addField('Total', friendlyDuration(sum));
+
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setTitle(`${username}'s total playtime by weekday`);
+        embed.setFooter('(Only while tracked)');
+        embed.setTimestamp(player.lastIncremented);
+        message.embed(embed);
     }
 };

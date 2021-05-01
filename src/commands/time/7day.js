@@ -1,6 +1,10 @@
+const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
+const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
+
+const DAY_AGO_NAMES = ['Today', 'Yesterday', '2 Days Ago', '2 Days Ago', '4 Days Ago', '5 Days Ago', '6 Days Ago'];
 
 module.exports = class sevenDayPlaytime extends Command {
     constructor(client) {
@@ -32,19 +36,22 @@ module.exports = class sevenDayPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        
-        let response = `**Playtime in the past 7 days for ${await usernameCache.getUsernameByID(player.mcID)}:**`;
-        response += `\n**Today:** ${adjustedPlayer.dailyHistory[29]} minutes`;
+        const username = await usernameCache.getUsernameByID(player.mcID);
+        const embed = new MessageEmbed();
         let total = adjustedPlayer.dailyHistory[29];
-        for (let daysAgo = 1; daysAgo < 7; daysAgo++) {
+
+        for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
             const value = adjustedPlayer.dailyHistory[29-daysAgo];
-            response += '\n';
-            if (value === null) response += `**${daysAgo} days ago:** *The player was not tracked!*`
-            else response += `**${daysAgo} days ago:** ${value} minutes`;
+            if (value === null) embed.addField(DAY_AGO_NAMES[daysAgo], '*untracked*');
+            else embed.addField(DAY_AGO_NAMES[daysAgo], friendlyDuration(value));
             total += value;
         }
-        response += `\n**Total:** ${total}`;
+        embed.addField('Total', friendlyDuration(total));
 
-        message.reply(response);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setTitle(`${username}'s 7-day playtime`);
+        embed.setFooter('(Only while tracked)');
+        embed.setTimestamp(player.lastIncremented);
+        message.embed(embed);
     }
 };
