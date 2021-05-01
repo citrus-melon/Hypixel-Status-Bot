@@ -19,41 +19,47 @@ class CacheItem {
     }
 }
 
-const getIDByUsername = async (username, force) => {
-    const cacheResult = cache.get(username);
 
-    if (cacheResult && !(cacheResult.expired || force)) {
-        return cacheResult.id;
-    }
+const fetchUsernameByID = async (id) => {
+    const response = await sessionServer(id);
+    const sameUsername = cache.findKey(item => item.username.toLowerCase() === response.name.toLowerCase());
+    cache.delete(sameUsername);
+    cache.set(response.id, new CacheItem(response.id, response.name));
+    return response.name;
+}
 
+const fetchIDByUsername = async (username) => {
     const response = await api(username);
-
     if (response.statusCode === 204) {
-        cache.set(username, new CacheItem(null, username));
+        const sameUsername = cache.findKey(item => item.username.toLowerCase() === username.toLowerCase());
+        cache.delete(sameUsername);
         return null;
     }
-
     const jsonResponse = await response.json();
 
-    cache.set(jsonResponse.name, new CacheItem(jsonResponse.id, jsonResponse.name));
+    const sameUsername = cache.findKey(item => item.username.toLowerCase() === jsonResponse.name.toLowerCase());
+    cache.delete(sameUsername);
+    cache.set(jsonResponse.id, new CacheItem(jsonResponse.id, jsonResponse.name));
     return jsonResponse.id;
 }
 
+const getIDByUsername = async (username) => {
+    const cacheResult = cache.find(item => item.username.toLowerCase() === username.toLowerCase());
+    if (!cacheResult) return await fetchIDByUsername(username);
+    if (cacheResult.expired) fetchIDByUsername(username);
+    return cacheResult.id;
+}
+
 const getUsernameByID = async (id) => {
-    const cacheResult = cache.find(item => item.id === id);
-
-    if (cacheResult) {
-        if (cacheResult.expired) cache.delete(cacheResult.username);
-        else return cacheResult.username;
-    }
-
-    const response = await sessionServer(id);
-
-    cache.set(response.name, new CacheItem(response.id, response.name));
-    return response.name;
+    const cacheResult = cache.get(id);
+    if (!cacheResult) return await fetchUsernameByID(id);
+    if (cacheResult.expired) fetchUsernameByID(id);
+    return cacheResult.username;
 }
 
 module.exports = {
     getUsernameByID: getUsernameByID,
-    getIDByUsername: getIDByUsername
+    getIDByUsername: getIDByUsername,
+    fetchIDByUsername: fetchIDByUsername,
+    fetchUsernameByID: fetchUsernameByID
 }
