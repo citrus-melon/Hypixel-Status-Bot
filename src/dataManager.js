@@ -18,7 +18,7 @@ class Player {
         this.online = online || false;
         this.creationDate = creationDate || Date.now();
         this.lastIncremented = lastIncremented || this.creationDate;
-        /** @type {?number[]}*/ this.dailyHistory = dailyHistory || new Array(30);
+        /** @type {?number[]}*/ this.dailyHistory = dailyHistory || new Array(30).fill(null);
         /** @type {?number[]}*/ this.monthlyHistory = monthlyHistory || [0];
         /** @type {number[]}*/ this.dailyTotals = dailyTotals || [0, 0, 0, 0, 0, 0, 0];
     }
