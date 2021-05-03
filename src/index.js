@@ -83,7 +83,7 @@ const loopStatuses = async () => {
 client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
-        client.user.setActivity(`${dataManager.list().length} statuses`, { type: 'WATCHING' });
+        client.user.setActivity(`${await dataManager.list().length} statuses`, { type: 'WATCHING' });
 
         guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);
