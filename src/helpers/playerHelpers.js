@@ -1,9 +1,10 @@
 const dataManager = require('../dataManager');
+const Player = require('../player');
 const usernameCache = require('../usernameCache');
 
-/** @param {dataManager.Player} input */
+/** @param {Player} input */
 const clonePlayer = (input) => {
-    return new dataManager.Player(
+    return new Player(
         input.mcID,
         input.discordID,
         input.online,
@@ -15,7 +16,7 @@ const clonePlayer = (input) => {
     );
 };
 
-/** @param {dataManager.Player} player @param {Date} now */
+/** @param {Player} player @param {Date} now */
 const tryChangeDays = (player, now) => {
     player = clonePlayer(player);
     const dayDelta = now.getDate() - new Date(player.lastIncremented).getDate();

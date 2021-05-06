@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const dataManager = require('../../dataManager');
+const Player = require('../../player');
 const usernameCache = require('../../usernameCache');
 
 module.exports = class linkPlayer extends Command {
@@ -44,7 +45,7 @@ module.exports = class linkPlayer extends Command {
         }
 
         let player = await dataManager.getByMinecraft(mcAccount);
-        if (!player) player = new dataManager.Player(mcAccount, discordID);
+        if (!player) player = new Player(mcAccount, discordID);
 
         else if (!player.discordID) player.discordID = discordID;
 
