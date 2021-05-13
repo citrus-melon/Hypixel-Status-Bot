@@ -1,5 +1,5 @@
 const {Command} = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerData = require('../../playerData');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
@@ -31,7 +31,7 @@ module.exports = class ClassName extends Command {
             return;
         }
 
-        await dataManager.remove(player.mcID);
+        await playerData.remove(player.mcID);
         message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
     }
 }

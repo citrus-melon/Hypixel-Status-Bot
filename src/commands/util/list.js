@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerData = require('../../playerData');
 const usernameCache = require('../../usernameCache');
 
 module.exports = class listPlayers extends Command {
@@ -18,7 +18,7 @@ module.exports = class listPlayers extends Command {
     async run(message) {
         let response = '**__All tracked players currently online:__**';
 
-        const players = await dataManager.getAll();
+        const players = await playerData.getAll();
         for (let [mcID, player] of players) {
             if(!player.online) continue;
             const username = await usernameCache.getUsernameByID(mcID);

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerData = require('../../playerData');
 const usernameCache = require('../../usernameCache');
 
 module.exports = class unlinkPlayer extends Command {
@@ -30,7 +30,7 @@ module.exports = class unlinkPlayer extends Command {
             return;
         }
 
-        const player = await dataManager.getByDiscord(discordAccount.id);
+        const player = await playerData.getByDiscord(discordAccount.id);
     
         if (!player) {
             message.reply(`${discordAccount.tag} does not have a linked account!`);
@@ -38,7 +38,7 @@ module.exports = class unlinkPlayer extends Command {
         }
     
         player.discordID = null;
-        dataManager.set(player.mcID, player);
+        playerData.set(player.mcID, player);
         message.reply(`Sucessfully unlinked ${await usernameCache.getUsernameByID(player.mcID)} from ${discordAccount.tag}!`)
     }
 };

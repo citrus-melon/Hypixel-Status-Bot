@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const getJSON = require('bent')('json');
-const dataManager = require('./dataManager');
+const playerData = require('./playerData');
 const playerHelpers = require('./helpers/playerHelpers');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
@@ -49,7 +49,7 @@ const loopStatuses = async () => {
     const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
     lastTick += tickDelta * 60000;
 
-    const players = await dataManager.getAll();
+    const players = await playerData.getAll();
     for (let [mcID, player] of players) {
         if(!player.discordID) return;
         const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${mcID}`);
@@ -76,14 +76,14 @@ const loopStatuses = async () => {
 
         if (!response.session.online && response.session.online !== player.online) return;
 
-        dataManager.set(mcID, player);
+        playerData.set(mcID, player);
     }
 }
 
 client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
-        client.user.setActivity(`${await dataManager.list().length} statuses`, { type: 'WATCHING' });
+        client.user.setActivity(`${await playerData.list().length} statuses`, { type: 'WATCHING' });
 
         guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);

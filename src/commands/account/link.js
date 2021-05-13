@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerData = require('../../playerData');
 const Player = require('../../player');
 const usernameCache = require('../../usernameCache');
 
@@ -39,12 +39,12 @@ module.exports = class linkPlayer extends Command {
 
         const discordID = discordAccount.id;
 
-        if (await dataManager.getByDiscord(discordID)) {
+        if (await playerData.getByDiscord(discordID)) {
             message.reply('You already have a linked Minecraft account!');
             return;
         }
 
-        let player = await dataManager.getByMinecraft(mcAccount);
+        let player = await playerData.getByMinecraft(mcAccount);
         if (!player) player = new Player(mcAccount, discordID);
 
         else if (!player.discordID) player.discordID = discordID;
@@ -55,7 +55,7 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
-        await dataManager.set(mcAccount, player);
+        await playerData.set(mcAccount, player);
         message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
     }
 };

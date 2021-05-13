@@ -1,4 +1,4 @@
-const dataManager = require('../dataManager');
+const playerData = require('../playerData');
 const Player = require('../player');
 const usernameCache = require('../usernameCache');
 
@@ -37,7 +37,7 @@ const tryChangeDays = (player, now) => {
 };
 
 const getDiscordOrMinecraft = async (input) => {
-    const player = typeof input === 'string' ? await dataManager.getByMinecraft(input) : await dataManager.getByDiscord(input.id);
+    const player = typeof input === 'string' ? await playerData.getByMinecraft(input) : await playerData.getByDiscord(input.id);
     if (!player && typeof input === 'string') {
         return `The player \`${await usernameCache.getUsernameByID(input)}\` does not have any tracked data!`;
     } else if (!player) {
