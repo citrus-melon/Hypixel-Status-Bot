@@ -8,7 +8,7 @@ const Player = require('./player');
 const clonePlayer = (input) => {
     if (!input) return input;
     return new Player(
-        input.mcID,
+        input._id,
         input.discordID,
         input.online,
         input.creationDate,
@@ -24,7 +24,7 @@ let trackedPlayers = new Collection(); // Stores all tracked players, essentiall
 if (fs.existsSync('data.json')) { // If saved data file exists, load it
     const fileContent = fs.readFileSync('data.json');
     const data = JSON.parse(fileContent);
-    for (const player of data) trackedPlayers.set(player.mcID, player);
+    for (const player of data) trackedPlayers.set(player._id, player);
 }
 
 const writeFile = () => {
@@ -36,15 +36,15 @@ const writeFile = () => {
 
 // Public functions
 
-/** @param {string} mcID @param {Player} player */
-const set = async (mcID, player) => {
-    trackedPlayers.set(mcID, clonePlayer(player));
+/** @param {string} _id @param {Player} player */
+const set = async (_id, player) => {
+    trackedPlayers.set(_id, clonePlayer(player));
     writeFile();
 };
 
-/** @param {string} mcID */
-const remove = async (mcID) => {
-    trackedPlayers.delete(mcID);
+/** @param {string} _id */
+const remove = async (_id) => {
+    trackedPlayers.delete(_id);
     writeFile();
 };
 
@@ -53,8 +53,8 @@ const getAll = async () => {
 };
 
 /** @param {string} */
-const getByMinecraft = async (mcID) => {
-    return clonePlayer(trackedPlayers.get(mcID));
+const getByMinecraft = async (_id) => {
+    return clonePlayer(trackedPlayers.get(_id));
 };
 
 /** @param {import('discord.js').Snowflake} discordID */

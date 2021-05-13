@@ -34,13 +34,13 @@ module.exports = class thisMonthPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const username = await usernameCache.getUsernameByID(player.mcID);
+        const username = await usernameCache.getUsernameByID(player._id);
         const value = adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length-1];
         const embed = new MessageEmbed();
 
         embed.setDescription(`${username} has played for **${friendlyDuration(value)}** in total this month!`);
 
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s total playtime by weekday`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);

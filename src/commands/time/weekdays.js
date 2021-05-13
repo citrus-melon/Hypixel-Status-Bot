@@ -35,7 +35,7 @@ module.exports = class lifetimePlaytime extends Command {
             return;
         }
 
-        const username = await usernameCache.getUsernameByID(player.mcID);
+        const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
         let sum = 0;
 
@@ -47,7 +47,7 @@ module.exports = class lifetimePlaytime extends Command {
 
         embed.addField('Total', friendlyDuration(sum));
 
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s total playtime by weekday`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);

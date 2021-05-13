@@ -1,7 +1,9 @@
+const { Player } = require('./playerData');
+
 module.exports = class Player {
     /**
-     * @param {string} mcID
-     * @param {import('discord.js').Snowflake} discordID
+     * @param {string} _id The Minecraft ID of the player
+     * @param {import('discord.js').Snowflake} discordID The id of any linked Discord account
      * @param {boolean} [online]
      * @param {number} [creationDate]
      * @param {number} [lastIncremented]
@@ -9,8 +11,8 @@ module.exports = class Player {
      * @param {?number[]} [monthlyHistory]
      * @param {number[]} [dailyTotals]
      */
-    constructor(mcID, discordID, online, creationDate, lastIncremented, dailyHistory, monthlyHistory, dailyTotals) {
-        this.mcID = mcID;
+    constructor(_id, discordID, online, creationDate, lastIncremented, dailyHistory, monthlyHistory, dailyTotals) {
+        this._id = _id;
         this.discordID = discordID;
         this.online = online || false;
         this.creationDate = creationDate || Date.now();

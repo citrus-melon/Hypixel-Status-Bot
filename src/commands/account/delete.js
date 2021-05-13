@@ -31,7 +31,7 @@ module.exports = class ClassName extends Command {
             return;
         }
 
-        await playerData.remove(player.mcID);
-        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
+        await playerData.remove(player._id);
+        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(player._id)}\` has been permanantly deleted!`)
     }
 }

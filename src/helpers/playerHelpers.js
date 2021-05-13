@@ -5,7 +5,7 @@ const usernameCache = require('../usernameCache');
 /** @param {Player} input */
 const clonePlayer = (input) => {
     return new Player(
-        input.mcID,
+        input._id,
         input.discordID,
         input.online,
         input.creationDate,

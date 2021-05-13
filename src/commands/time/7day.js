@@ -36,7 +36,7 @@ module.exports = class sevenDayPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const username = await usernameCache.getUsernameByID(player.mcID);
+        const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
         let total = adjustedPlayer.dailyHistory[29];
 
@@ -48,7 +48,7 @@ module.exports = class sevenDayPlaytime extends Command {
         }
         embed.addField('Total', friendlyDuration(total));
 
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s 7-day playtime`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);

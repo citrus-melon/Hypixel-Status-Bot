@@ -4,7 +4,7 @@ const fs = require('fs');
 
 class Player {
     /**
-     * @param {string} mcID
+     * @param {string} _id
      * @param {import('discord.js').Snowflake} discordID
      * @param {boolean} [online]
      * @param {number} [creationDate]
@@ -13,8 +13,8 @@ class Player {
      * @param {?number[]} [monthlyHistory]
      * @param {number[]} [dailyTotals]
      */
-    constructor(mcID, discordID, online, creationDate, lastIncremented, dailyHistory, monthlyHistory, dailyTotals) {
-        this.mcID = mcID;
+    constructor(_id, discordID, online, creationDate, lastIncremented, dailyHistory, monthlyHistory, dailyTotals) {
+        this._id = _id;
         this.discordID = discordID;
         this.online = online || false;
         this.creationDate = creationDate || Date.now();
@@ -34,7 +34,7 @@ const db = new Database();
 const clonePlayer = (input) => {
     if (!input) return input;
     return new Player(
-        input.mcID,
+        input._id,
         input.discordID,
         input.online,
         input.creationDate,
@@ -61,16 +61,16 @@ const cacheAll = async () => {
 
 // Public functions
 
-/** @param {string} mcID @param {Player} player */
-const set = async (mcID, player) => {
-    await db.set(mcID, player);
-    if (cache) cache.set(mcID, clonePlayer(player));
+/** @param {string} _id @param {Player} player */
+const set = async (_id, player) => {
+    await db.set(_id, player);
+    if (cache) cache.set(_id, clonePlayer(player));
 };
 
-/** @param {string} mcID */
-const remove = async (mcID) => {
-    await db.delete(mcID);
-    if (cache) cache.delete(mcID);
+/** @param {string} _id */
+const remove = async (_id) => {
+    await db.delete(_id);
+    if (cache) cache.delete(_id);
 };
 
 const getAll = async () => {
@@ -79,9 +79,9 @@ const getAll = async () => {
 };
 
 /** @param {string} */
-const getByMinecraft = async (mcID) => {
+const getByMinecraft = async (_id) => {
     if (!cache) await cacheAll();
-    return clonePlayer(cache.get(mcID));
+    return clonePlayer(cache.get(_id));
 };
 
 /** @param {import('discord.js').Snowflake} discordID */

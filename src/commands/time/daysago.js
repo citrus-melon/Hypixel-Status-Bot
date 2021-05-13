@@ -42,11 +42,11 @@ module.exports = class todayPlaytime extends Command {
         }
 
         const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const username = await usernameCache.getUsernameByID(player.mcID);
+        const username = await usernameCache.getUsernameByID(player._id);
         const value = adjustedPlayer.dailyHistory[29-daysAgo];
         
         const embed = new MessageEmbed();
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s playtime today`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);

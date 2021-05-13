@@ -31,6 +31,6 @@ module.exports = class rawData extends Command {
             return;
         }
         
-        message.reply('Raw data for ' + await usernameCache.getUsernameByID(player.mcID) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
+        message.reply('Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
     }
 };

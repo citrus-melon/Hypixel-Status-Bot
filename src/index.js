@@ -50,9 +50,9 @@ const loopStatuses = async () => {
     lastTick += tickDelta * 60000;
 
     const players = await playerData.getAll();
-    for (let [mcID, player] of players) {
+    for (let [_id, player] of players) {
         if(!player.discordID) return;
-        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${mcID}`);
+        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${_id}`);
         if (response.success === false) {
             console.error('Hypixel Api Error: ' + response.cause);
             return;
@@ -70,13 +70,13 @@ const loopStatuses = async () => {
             const member = await guild.members.fetch(player.discordID);
             player.online = response.session.online;
             console.log(`${member.displayName} state change to ${response.session.online}`)
-            sendNotification(member.displayName, player.mcID, response.session.online);
+            sendNotification(member.displayName, player._id, response.session.online);
             updateRole(member, response.session.online);
         }
 
         if (!response.session.online && response.session.online !== player.online) return;
 
-        playerData.set(mcID, player);
+        playerData.set(_id, player);
     }
 }
 
