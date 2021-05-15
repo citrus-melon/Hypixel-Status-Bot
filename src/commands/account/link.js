@@ -37,25 +37,29 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
-        const discordID = discordAccount.id;
-
-        if (await playerData.getByDiscord(discordID)) {
-            message.reply('You already have a linked Minecraft account!');
-            return;
+        const now = new Date();
+        const blankValues = {
+            online: false,
+            creationDate: now,
+            lastIncremented: now,
+            dailyHistory: new Array(30).fill(null),
+            monthlyHistory: [0],
+            dailyTotals: [0, 0, 0, 0, 0, 0, 0]
         }
 
-        let player = await playerData.getByMinecraft(mcAccount);
-        if (!player) player = new Player(mcAccount, discordID);
-
-        else if (!player.discordID) player.discordID = discordID;
-
-        else {
-            if (player.discordID !== discordID) message.reply('That Minecraft account has already been linked by someone else!');
-            else message.reply('Those accounts are already linked!');
-            return;
+        try {
+            await playerData.updateOne(
+                { _id: mcAccount, discordID: null },
+                { $set: { 'discordID': discordAccount.id }, $setOnInsert: blankValues },
+                { upsert: true }
+            )
+            message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
+        } catch (err) {
+            if (err.code === 11000 && err.keyPattern.discordID) {
+                message.reply('You already have a linked Minecraft account!');
+            } else if (err.code === 11000 && err.keyPattern._id) {
+                message.reply('That Minecraft account is already linked to a Discord member!');
+            } else throw err;
         }
-
-        await playerData.set(mcAccount, player);
-        message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
     }
 };
