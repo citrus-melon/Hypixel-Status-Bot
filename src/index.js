@@ -63,7 +63,7 @@ const loopStatuses = async () => {
         if (dayUpdate) await playerData.updateOne({_id: player._id, lastIncremented: player.lastIncremented}, dayUpdate);
 
         /** @type {import('mongodb').UpdateQuery<*>*/
-        let updates = {};
+        let updates = {$set:{}};
 
         if (response.session.online) {
             console.log('shound incorement ' + tickDelta)
@@ -76,14 +76,14 @@ const loopStatuses = async () => {
         
         if (response.session.online !== player.online) {
             const member = await guild.members.fetch(player.discordID);
-            updates.$set = {online: response.session.online};
+            updates.$set.online = response.session.online;
             console.log(`${member.displayName} state change to ${response.session.online}`)
             sendNotification(member.displayName, player._id, response.session.online);
             updateRole(member, response.session.online);
         }
 
         if (!response.session.online && response.session.online === player.online) return;
-        updates.$set = {lastIncremented: now};
+        updates.$set.lastIncremented = now;
         playerData.updateOne({_id: player._id}, updates);
     }
 }
