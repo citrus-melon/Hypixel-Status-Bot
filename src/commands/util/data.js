@@ -9,7 +9,7 @@ module.exports = class rawData extends Command {
             group: 'util',
             memberName: 'data',
             description: 'Get all data associated with a player, in JSON form',
-            examples: ['today', 'today citrus_melon', 'today @citrus-melon'],
+            examples: ['rawdata', 'rawdata citrus_melon', 'rawdata @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [
                 {
@@ -26,10 +26,7 @@ module.exports = class rawData extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        if (typeof player === 'string') { message.reply(player); return; }
         
         message.reply('Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
     }

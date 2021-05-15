@@ -27,15 +27,12 @@ module.exports = class thisMonthPlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {monthlyHistory: 1, lastIncremented: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
+        const adjustedHistory = playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date());
+        const value = adjustedHistory[0];
         const username = await usernameCache.getUsernameByID(player._id);
-        const value = adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length-1];
         const embed = new MessageEmbed();
 
         embed.setDescription(`${username} has played for **${friendlyDuration(value)}** in total this month!`);

@@ -19,34 +19,35 @@ const clonePlayer = (input) => {
 const CLEAR_DAYS_THRESHOLD = 1000*60*60*24*31;
 const SKIP_DAY_THRESHOLD = 1000*60*60*24*48;
 
-/** @param {Player} player @param {Date} now */
-const tryChangeDays = (player, now) => {
-    player = clonePlayer(player);
-    const lastIncremented = new Date(player.lastIncremented);
-
-    if (now - player.lastIncremented > CLEAR_DAYS_THRESHOLD) {
-        player.dailyHistory = new Array(30).fill(null);
+/** @param {number[]} history @param {Date} lastIncremented @param {Date} now */
+const adjustDailyHistory = (history, lastIncremented, now) => {
+    if (now - lastIncremented > CLEAR_DAYS_THRESHOLD) {
+        history = new Array(30).fill(null);
     } else {
+        history = [...history];
         for (
             let index = new Date(lastIncremented);
             now - index > SKIP_DAY_THRESHOLD || now.getDate() !== index.getDate();
             index.setDate(index.getDate()+1)
         ) {
-            player.dailyHistory.push(null);
-            player.dailyHistory.shift();
+            history.push(null);
+            history.shift();
         }
     }
+    return history;
+}
 
-    const monthDelta = now.getMonth() - lastIncremented.getMonth()
-        + (now.getFullYear() - lastIncremented.getFullYear()) * 12;
+/** @param {number[]} history @param {Date} lastIncremented @param {Date} now */
+const adjustMonthlyHistory = (history, lastIncremented, now) => {
+    history = [...history];
+    let monthDelta = now.getMonth() - lastIncremented.getMonth()
+    monthDelta += (now.getFullYear() - lastIncremented.getFullYear()) * 12;
+
     for (let index = 0; index < monthDelta; index++) {
-        player.monthlyHistory.push(null);
+        history.unshift(null);
     }
 
-    if(!player.dailyHistory[player.dailyHistory.length-1]) player.dailyHistory[player.dailyHistory.length-1] = 0;
-    if(!player.monthlyHistory[player.monthlyHistory.length-1]) player.monthlyHistory[player.monthlyHistory.length-1] = 0;
-    player.lastIncremented = now.getTime();
-    return player;
+    return history;
 };
 
 const changeDaysUpdate = (lastIncremented, now) => {
@@ -77,18 +78,22 @@ const changeDaysUpdate = (lastIncremented, now) => {
     return updates;
 }
 
-const getDiscordOrMinecraft = async (input) => {
-    const player = typeof input === 'string' ? await playerData.getByMinecraft(input) : await playerData.getByDiscord(input.id);
-    if (!player && typeof input === 'string') {
-        return `The player \`${await usernameCache.getUsernameByID(input)}\` does not have any tracked data!`;
-    } else if (!player) {
-        return`\`${input.tag}\` does not have a linked Minecraft account!`;
+/** @param {import('discord.js').User|string} search */
+const getDiscordOrMinecraft = async (search, projection) => {
+    /** @type {import('../player')} */ let player;
+    if (typeof search === 'string') { // It is a Minecraft ID
+        player = await playerData.findOne({'_id': search}, projection);
+        if (!player) return `The player \`${await usernameCache.getUsernameByID(search)}\` does not have any tracked data!`;
+    } else { // It is a Discord user
+        player = await playerData.findOne({'discordID': search.id}, projection);
+        if (!player) return`\`${search.tag}\` does not have a linked Minecraft account!`;
     }
     return player;
 }
 
 module.exports = {
-    tryChangeDays: tryChangeDays,
+    adjustDailyHistory: adjustDailyHistory,
+    adjustMonthlyHistory: adjustMonthlyHistory,
     getDiscordOrMinecraft: getDiscordOrMinecraft,
     changeDaysUpdate: changeDaysUpdate
 };

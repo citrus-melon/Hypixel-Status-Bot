@@ -27,15 +27,12 @@ module.exports = class todayPlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
+        const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
+        const value = adjustedHistory[29];
         const username = await usernameCache.getUsernameByID(player._id);
-        const value = adjustedPlayer.dailyHistory[29];
         
         const embed = new MessageEmbed();
         embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);

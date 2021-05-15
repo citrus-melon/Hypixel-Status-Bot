@@ -29,19 +29,16 @@ module.exports = class sevenDayPlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
+        const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
         const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
-        let total = adjustedPlayer.dailyHistory[29];
+        let total = adjustedHistory[29];
 
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
-            const value = adjustedPlayer.dailyHistory[29-daysAgo];
+            const value = adjustedHistory[29-daysAgo];
             if (value === null) embed.addField(DAY_AGO_NAMES[daysAgo], '*untracked*');
             else embed.addField(DAY_AGO_NAMES[daysAgo], friendlyDuration(value));
             total += value;

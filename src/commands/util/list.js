@@ -19,9 +19,9 @@ module.exports = class listPlayers extends Command {
         let response = '**__All tracked players currently online:__**';
 
         const players = await playerData.getAll();
-        for (let [_id, player] of players) {
+        for (const player of players) {
             if(!player.online) continue;
-            const username = await usernameCache.getUsernameByID(_id);
+            const username = await usernameCache.getUsernameByID(player._id);
             response += `\n**${username}** is online`
         }
 

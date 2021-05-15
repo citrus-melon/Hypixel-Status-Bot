@@ -27,11 +27,8 @@ module.exports = class lifetimePlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyTotals: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
     
         let sum = 0;
         for (const day of player.dailyTotals) sum += day;
