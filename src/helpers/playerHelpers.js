@@ -2,20 +2,6 @@ const playerData = require('../playerData');
 const Player = require('../player');
 const usernameCache = require('../usernameCache');
 
-/** @param {Player} input */
-const clonePlayer = (input) => {
-    return new Player(
-        input._id,
-        input.discordID,
-        input.online,
-        input.creationDate,
-        input.lastIncremented,
-        [...input.dailyHistory],
-        [...input.monthlyHistory],
-        [...input.dailyTotals]
-    );
-};
-
 const CLEAR_DAYS_THRESHOLD = 1000*60*60*24*31;
 const SKIP_DAY_THRESHOLD = 1000*60*60*24*48;
 
