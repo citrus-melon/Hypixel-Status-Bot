@@ -49,7 +49,6 @@ const loopStatuses = async () => {
     const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
     lastTick += tickDelta * 60000;
 
-    /** @type {import('mongodb').Cursor<import('./player')>} */
     const players = await playerData.findMultiple({"discordID":{$ne:null}})
         .project({online: 1, lastIncremented: 1, discordID: 1});
     for await (const player of players) {
@@ -62,7 +61,7 @@ const loopStatuses = async () => {
         const dayUpdate = playerHelpers.changeDaysUpdate(player.lastIncremented, now);
         if (dayUpdate) await playerData.updateOne({_id: player._id, lastIncremented: player.lastIncremented}, dayUpdate);
 
-        /** @type {import('mongodb').UpdateQuery<*>*/
+        /** @type {import('mongodb').UpdateQuery<import('./player')>}*/
         let updates = {$set:{}};
 
         if (response.session.online) {

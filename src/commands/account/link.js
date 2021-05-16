@@ -37,15 +37,9 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
-        const now = new Date();
-        const blankValues = {
-            online: false,
-            creationDate: now,
-            lastIncremented: now,
-            dailyHistory: new Array(30).fill(null),
-            monthlyHistory: [0],
-            dailyTotals: [0, 0, 0, 0, 0, 0, 0]
-        }
+        const blankValues = new Player();
+        delete blankValues._id;
+        delete blankValues.discordID;
 
         try {
             await playerData.updateOne(
