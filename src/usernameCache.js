@@ -45,14 +45,14 @@ module.exports.fetchIDByUsername = async (username) => {
 
 module.exports.getIDByUsername = async (username) => {
     const cacheResult = cache.find(item => item.username.toLowerCase() === username.toLowerCase());
-    if (!cacheResult) return await fetchIDByUsername(username);
-    if (cacheResult.expired) fetchIDByUsername(username);
+    if (!cacheResult) return await module.exports.fetchIDByUsername(username);
+    if (cacheResult.expired) module.exports.fetchIDByUsername(username);
     return cacheResult.id;
 }
 
 module.exports.getUsernameByID = async (id) => {
     const cacheResult = cache.get(id);
-    if (!cacheResult) return await fetchUsernameByID(id);
-    if (cacheResult.expired) fetchUsernameByID(id);
+    if (!cacheResult) return await module.exports.fetchUsernameByID(id);
+    if (cacheResult.expired) module.exports.fetchUsernameByID(id);
     return cacheResult.username;
 }
