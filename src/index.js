@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const getJSON = require('bent')('json');
-const dataManager = require('./dataManager');
+const playerData = require('./playerData');
 const playerHelpers = require('./helpers/playerHelpers');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
@@ -49,41 +49,49 @@ const loopStatuses = async () => {
     const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
     lastTick += tickDelta * 60000;
 
-    const players = await dataManager.getAll();
-    for (let [mcID, player] of players) {
-        if(!player.discordID) return;
-        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${mcID}`);
+    const players = await playerData.findMultiple({"discordID":{$ne:null}})
+        .project({online: 1, lastIncremented: 1, discordID: 1});
+    for await (const player of players) {
+        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player._id}`);
         if (response.success === false) {
             console.error('Hypixel Api Error: ' + response.cause);
             return;
         }
 
-        player = playerHelpers.tryChangeDays(player, new Date());
+        const dayUpdate = playerHelpers.changeDaysUpdate(player.lastIncremented, now);
+        if (dayUpdate) await playerData.updateOne({_id: player._id, lastIncremented: player.lastIncremented}, dayUpdate);
+
+        /** @type {import('mongodb').UpdateQuery<import('./player')>}*/
+        let updates = {$set:{}};
 
         if (response.session.online) {
-            player.dailyHistory[player.dailyHistory.length-1] += tickDelta;
-            player.monthlyHistory[player.monthlyHistory.length-1] += tickDelta;
-            player.dailyTotals[now.getDay()] += tickDelta;
+            console.log('shound incorement ' + tickDelta)
+            updates.$inc = {
+                'dailyHistory.29': tickDelta,
+                'monthlyHistory.0': tickDelta,
+            }
+            updates.$inc[`dailyTotals.${now.getDay()}`] = tickDelta;
         }
         
         if (response.session.online !== player.online) {
             const member = await guild.members.fetch(player.discordID);
-            player.online = response.session.online;
+            updates.$set.online = response.session.online;
             console.log(`${member.displayName} state change to ${response.session.online}`)
-            sendNotification(member.displayName, player.mcID, response.session.online);
+            sendNotification(member.displayName, player._id, response.session.online);
             updateRole(member, response.session.online);
         }
 
-        if (!response.session.online && response.session.online !== player.online) return;
-
-        dataManager.set(mcID, player);
+        if (!response.session.online && response.session.online === player.online) return;
+        updates.$set.lastIncremented = now;
+        playerData.updateOne({_id: player._id}, updates);
     }
 }
 
 client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
-        client.user.setActivity(`${await dataManager.list().length} statuses`, { type: 'WATCHING' });
+        console.log(await playerData.findMultiple({}).toArray());
+        client.user.setActivity(`${await playerData.countDoucments({"discordID":{$ne:null}})} statuses`, { type: 'WATCHING' });
 
         guild = await client.guilds.fetch(process.env.GUILD_ID);
         role = await guild.roles.fetch(process.env.ROLE_ID);
@@ -96,4 +104,4 @@ client.once('ready', async () => {
     }
 });
 
-client.login(process.env.BOT_TOKEN);
+playerData.connect().then(() => client.login(process.env.BOT_TOKEN));

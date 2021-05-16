@@ -29,26 +29,23 @@ module.exports = class sevenDayPlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const username = await usernameCache.getUsernameByID(player.mcID);
+        const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
+        const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
-        let total = adjustedPlayer.dailyHistory[29];
+        let total = adjustedHistory[29];
 
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
-            const value = adjustedPlayer.dailyHistory[29-daysAgo];
+            const value = adjustedHistory[29-daysAgo];
             if (value === null) embed.addField(DAY_AGO_NAMES[daysAgo], '*untracked*');
             else embed.addField(DAY_AGO_NAMES[daysAgo], friendlyDuration(value));
             total += value;
         }
         embed.addField('Total', friendlyDuration(total));
 
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s 7-day playtime`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);

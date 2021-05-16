@@ -1,7 +1,8 @@
 const {Command} = require('discord.js-commando');
-const dataManager = require('../../dataManager');
-const playerHelpers = require('../../helpers/playerHelpers');
+const playerData = require('../../playerData');
 const usernameCache = require('../../usernameCache');
+
+const OPTIONS = {projection: {'_id': 1}}
 
 module.exports = class ClassName extends Command {
     constructor(client) {
@@ -25,13 +26,14 @@ module.exports = class ClassName extends Command {
     }
 
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
+        let result;
+        if (typeof account === 'string') { // It is a Minecraft ID
+            result = (await playerData.findOneAndDelete({'_id': account}, OPTIONS)).value;
+            if (!result) return message.reply(`The player \`${await usernameCache.getUsernameByID(account)}\` does not have any tracked data!`);
+        } else { // It is a Discord user
+            result = (await playerData.findOneAndDelete({'discordID': account.id}, OPTIONS)).value;
+            if (!result) return message.reply(`\`${account.tag}\` does not have a linked Minecraft account!`);
         }
-
-        await dataManager.remove(player.mcID);
-        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(player.mcID)}\` has been permanantly deleted!`)
+        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(result._id)}\` has been permanantly deleted!`);
     }
 }

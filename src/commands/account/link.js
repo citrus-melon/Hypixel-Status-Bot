@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const dataManager = require('../../dataManager');
+const playerData = require('../../playerData');
 const Player = require('../../player');
 const usernameCache = require('../../usernameCache');
 
@@ -37,25 +37,23 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
-        const discordID = discordAccount.id;
+        const blankValues = new Player();
+        delete blankValues._id;
+        delete blankValues.discordID;
 
-        if (await dataManager.getByDiscord(discordID)) {
-            message.reply('You already have a linked Minecraft account!');
-            return;
+        try {
+            await playerData.updateOne(
+                { _id: mcAccount, discordID: null },
+                { $set: { 'discordID': discordAccount.id }, $setOnInsert: blankValues },
+                { upsert: true }
+            )
+            message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
+        } catch (err) {
+            if (err.code === 11000 && err.keyPattern.discordID) {
+                message.reply('You already have a linked Minecraft account!');
+            } else if (err.code === 11000 && err.keyPattern._id) {
+                message.reply('That Minecraft account is already linked to a Discord member!');
+            } else throw err;
         }
-
-        let player = await dataManager.getByMinecraft(mcAccount);
-        if (!player) player = new Player(mcAccount, discordID);
-
-        else if (!player.discordID) player.discordID = discordID;
-
-        else {
-            if (player.discordID !== discordID) message.reply('That Minecraft account has already been linked by someone else!');
-            else message.reply('Those accounts are already linked!');
-            return;
-        }
-
-        await dataManager.set(mcAccount, player);
-        message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
     }
 };

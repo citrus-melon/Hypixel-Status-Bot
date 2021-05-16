@@ -27,20 +27,17 @@ module.exports = class thisMonthPlaytime extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') {
-            message.reply(player);
-            return;
-        }
+        const player = await playerHelpers.getDiscordOrMinecraft(account, {monthlyHistory: 1, lastIncremented: 1});
+        if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedPlayer = playerHelpers.tryChangeDays(player, new Date());
-        const username = await usernameCache.getUsernameByID(player.mcID);
-        const value = adjustedPlayer.monthlyHistory[adjustedPlayer.monthlyHistory.length-1];
+        const adjustedHistory = playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date());
+        const value = adjustedHistory[0];
+        const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
 
         embed.setDescription(`${username} has played for **${friendlyDuration(value)}** in total this month!`);
 
-        embed.setAuthor(username, `https://crafatar.com/avatars/${player.mcID}`, `https://namemc.com/profile/${player.mcID}`);
+        embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s total playtime by weekday`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
