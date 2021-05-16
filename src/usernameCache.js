@@ -20,7 +20,7 @@ class CacheItem {
 }
 
 
-const fetchUsernameByID = async (id) => {
+module.exports.fetchUsernameByID = async (id) => {
     const response = await sessionServer(id);
     const sameUsername = cache.findKey(item => item.username.toLowerCase() === response.name.toLowerCase());
     cache.delete(sameUsername);
@@ -28,7 +28,7 @@ const fetchUsernameByID = async (id) => {
     return response.name;
 }
 
-const fetchIDByUsername = async (username) => {
+module.exports.fetchIDByUsername = async (username) => {
     const response = await api(username);
     if (response.statusCode === 204) {
         const sameUsername = cache.findKey(item => item.username.toLowerCase() === username.toLowerCase());
@@ -43,23 +43,16 @@ const fetchIDByUsername = async (username) => {
     return jsonResponse.id;
 }
 
-const getIDByUsername = async (username) => {
+module.exports.getIDByUsername = async (username) => {
     const cacheResult = cache.find(item => item.username.toLowerCase() === username.toLowerCase());
     if (!cacheResult) return await fetchIDByUsername(username);
     if (cacheResult.expired) fetchIDByUsername(username);
     return cacheResult.id;
 }
 
-const getUsernameByID = async (id) => {
+module.exports.getUsernameByID = async (id) => {
     const cacheResult = cache.get(id);
     if (!cacheResult) return await fetchUsernameByID(id);
     if (cacheResult.expired) fetchUsernameByID(id);
     return cacheResult.username;
-}
-
-module.exports = {
-    getUsernameByID: getUsernameByID,
-    getIDByUsername: getIDByUsername,
-    fetchIDByUsername: fetchIDByUsername,
-    fetchUsernameByID: fetchUsernameByID
 }

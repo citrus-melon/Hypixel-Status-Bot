@@ -1,7 +1,7 @@
 const { ArgumentType } = require('discord.js-commando');
 const usernameCache = require('../usernameCache');
 
-class MinecraftAccountArgumentType extends ArgumentType {
+module.exports = class MinecraftAccountArgumentType extends ArgumentType {
     constructor(client) {
         super(client, 'minecraftaccount');
     }
@@ -19,5 +19,3 @@ class MinecraftAccountArgumentType extends ArgumentType {
         return await usernameCache.getIDByUsername(val);
     }
 }
-
-module.exports = MinecraftAccountArgumentType;

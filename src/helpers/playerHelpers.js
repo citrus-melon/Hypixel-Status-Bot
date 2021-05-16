@@ -20,7 +20,7 @@ const CLEAR_DAYS_THRESHOLD = 1000*60*60*24*31;
 const SKIP_DAY_THRESHOLD = 1000*60*60*24*48;
 
 /** @param {number[]} history @param {Date} lastIncremented @param {Date} now */
-const adjustDailyHistory = (history, lastIncremented, now) => {
+module.exports.adjustDailyHistory = (history, lastIncremented, now) => {
     if (now - lastIncremented > CLEAR_DAYS_THRESHOLD) {
         history = new Array(30).fill(null);
     } else {
@@ -38,7 +38,7 @@ const adjustDailyHistory = (history, lastIncremented, now) => {
 }
 
 /** @param {number[]} history @param {Date} lastIncremented @param {Date} now */
-const adjustMonthlyHistory = (history, lastIncremented, now) => {
+module.exports.adjustMonthlyHistory = (history, lastIncremented, now) => {
     history = [...history];
     let monthDelta = now.getMonth() - lastIncremented.getMonth()
     monthDelta += (now.getFullYear() - lastIncremented.getFullYear()) * 12;
@@ -50,7 +50,7 @@ const adjustMonthlyHistory = (history, lastIncremented, now) => {
     return history;
 };
 
-const changeDaysUpdate = (lastIncremented, now) => {
+module.exports.changeDaysUpdate = (lastIncremented, now) => {
     let addedDays = [], addedMonths = [], updates = {};
     if (now - lastIncremented > CLEAR_DAYS_THRESHOLD) {
         addedDays = new Array(30).fill(null);
@@ -79,7 +79,7 @@ const changeDaysUpdate = (lastIncremented, now) => {
 }
 
 /** @param {import('discord.js').User|string} search */
-const getDiscordOrMinecraft = async (search, projection) => {
+module.exports.getDiscordOrMinecraft = async (search, projection) => {
     /** @type {import('../player')} */ let player;
     if (typeof search === 'string') { // It is a Minecraft ID
         player = await playerData.findOne({'_id': search}, projection);
@@ -90,10 +90,3 @@ const getDiscordOrMinecraft = async (search, projection) => {
     }
     return player;
 }
-
-module.exports = {
-    adjustDailyHistory: adjustDailyHistory,
-    adjustMonthlyHistory: adjustMonthlyHistory,
-    getDiscordOrMinecraft: getDiscordOrMinecraft,
-    changeDaysUpdate: changeDaysUpdate
-};

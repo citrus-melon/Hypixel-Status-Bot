@@ -1,6 +1,6 @@
 const { ArgumentType } = require('discord.js-commando');
 
-class MentionArgumentType extends ArgumentType {
+module.exports = class MentionArgumentType extends ArgumentType {
     constructor(client) {
         super(client, 'mention');
     }
@@ -45,5 +45,3 @@ function memberFilterExact(search) {
         (mem.nickname && mem.nickname.toLowerCase() === search) ||
         `${mem.user.username.toLowerCase()}#${mem.user.discriminator}` === search;
 }
-
-module.exports = MentionArgumentType;
