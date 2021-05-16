@@ -41,6 +41,6 @@ module.exports = class lifetimePlaytime extends Command {
         embed.setDescription(`${username} has played for **${friendlyDuration(sum)}** in total!`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.embed(embed);
+        message.reply(embed);
     }
 };

@@ -52,6 +52,6 @@ module.exports = class todayPlaytime extends Command {
         if (value === null) embed.setDescription(`${username} wasn't tracked ${daysAgoString(daysAgo)} days ago!`);
         else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${daysAgoString(daysAgo)} days ago!`);
 
-        message.embed(embed);
+        message.reply(embed);
     }
 };

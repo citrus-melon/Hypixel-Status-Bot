@@ -48,6 +48,6 @@ module.exports = class sevenDayPlaytime extends Command {
         embed.setTitle(`${username}'s 7-day playtime`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.embed(embed);
+        message.reply(embed);
     }
 };

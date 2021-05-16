@@ -40,6 +40,6 @@ module.exports = class todayPlaytime extends Command {
         embed.setDescription(`${username} has played for **${friendlyDuration(value)}** in total today!`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.embed(embed);
+        message.reply(embed);
     }
 };

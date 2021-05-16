@@ -48,6 +48,6 @@ module.exports = class lifetimePlaytime extends Command {
         embed.setTitle(`${username}'s total playtime by weekday`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.embed(embed);
+        message.reply(embed);
     }
 };

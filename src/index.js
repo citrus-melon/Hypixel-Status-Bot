@@ -1,6 +1,7 @@
 const getJSON = require('bent')('json');
 const playerData = require('./playerData');
 const playerHelpers = require('./helpers/playerHelpers');
+require('./inlineReplyPatch');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const notification = require('./notification');
