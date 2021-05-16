@@ -1,4 +1,4 @@
 {
     "env": {"node": true, "es6": true},
-    "parserOptions": {"ecmaVersion": 8}
+    "parserOptions": {"ecmaVersion": 12}
 }

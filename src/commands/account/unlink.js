@@ -1,8 +1,9 @@
 const { Command } = require('discord.js-commando');
+const { role } = require('../../notification');
 const playerData = require('../../playerData');
 const usernameCache = require('../../usernameCache');
 
-const UPDATE = {$set: {discordID: null}};
+const UPDATE = {$set: {discordID: null, online: false}};
 const PROJECTION = {projection: {'_id': 1, 'discordID': 1}};
 
 module.exports = class unlinkPlayer extends Command {
@@ -42,6 +43,7 @@ module.exports = class unlinkPlayer extends Command {
             if (!result) return message.reply(`\`${account.tag}\` does not have a linked Minecraft account!`);
         }
         const discordTag = this.client.users.cache.get(result.discordID).tag;
+        role(this.client, result.discordID, false);
         message.reply(`Sucessfully unlinked \`${await usernameCache.getUsernameByID(result._id)}\` from \`${discordTag}\`!`);
     }
 };

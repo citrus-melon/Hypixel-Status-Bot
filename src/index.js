@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
 const getJSON = require('bent')('json');
 const playerData = require('./playerData');
 const playerHelpers = require('./helpers/playerHelpers');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
+const notification = require('./notification');
 
 const client = new CommandoClient({
     commandPrefix: 'h!',
@@ -21,27 +21,11 @@ client.registry
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
-
-/** @type {Discord.Guild} */ let guild;
-/** @type {Discord.Role} */ let role;
 /** @type {number} */ let lastTick;
 
-const sendNotification = (username, mcID, online) => {
-    const notificationChannel = client.channels.cache.get(process.env.CHANNEL_ID);
-    const embed = new Discord.MessageEmbed();
-    if (online === true) {
-        embed.setColor('#91ff8f');
-        embed.setAuthor(username + ' is now online', 'https://crafatar.com/avatars/' + mcID)
-    } else {
-        embed.setColor('#ff8f8f')
-        embed.setAuthor(username + ' is now offline', 'https://crafatar.com/avatars/' + mcID)
-    }
-    notificationChannel.send(embed);
-}
-
-const updateRole = (member, online) => {
-    if (online) member.roles.add(role);
-    else member.roles.remove(role);
+const catchMissingMember = (err) => {
+    if (err.code !== 10007) throw err;
+    playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
 }
 
 const loopStatuses = async () => {
@@ -74,11 +58,9 @@ const loopStatuses = async () => {
         }
         
         if (response.session.online !== player.online) {
-            const member = await guild.members.fetch(player.discordID);
             updates.$set.online = response.session.online;
-            console.log(`${member.displayName} state change to ${response.session.online}`)
-            sendNotification(member.displayName, player._id, response.session.online);
-            updateRole(member, response.session.online);
+            notification.send(client, player._id, response.session.online);
+            notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
         }
 
         if (!response.session.online && response.session.online === player.online) return;
@@ -92,11 +74,8 @@ client.once('ready', async () => {
         console.log(`Logged in as ${client.user.tag}!`);
         console.log(await playerData.findMultiple({}).toArray());
         client.user.setActivity(`${await playerData.countDoucments({"discordID":{$ne:null}})} statuses`, { type: 'WATCHING' });
-
-        guild = await client.guilds.fetch(process.env.GUILD_ID);
-        role = await guild.roles.fetch(process.env.ROLE_ID);
+        
         lastTick = Date.now();
-
         loopStatuses();
         setInterval(loopStatuses, 30000);
     } catch (error) {
