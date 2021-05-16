@@ -1,10 +1,9 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
+const daysAgoString = require('../../helpers/daysAgoString');
 const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
-
-const DAY_AGO_NAMES = ['Today', 'Yesterday', '2 Days Ago', '2 Days Ago', '4 Days Ago', '5 Days Ago', '6 Days Ago'];
 
 module.exports = class sevenDayPlaytime extends Command {
     constructor(client) {
@@ -39,7 +38,7 @@ module.exports = class sevenDayPlaytime extends Command {
 
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
             const value = adjustedHistory[29-daysAgo];
-            if (value === null) embed.addField(DAY_AGO_NAMES[daysAgo], '*untracked*');
+            if (value === null) embed.addField(daysAgoString(daysAgo), '*untracked*');
             else embed.addField(DAY_AGO_NAMES[daysAgo], friendlyDuration(value));
             total += value;
         }
