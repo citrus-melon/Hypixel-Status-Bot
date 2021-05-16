@@ -49,7 +49,6 @@ const loopStatuses = async () => {
         let updates = {$set:{}};
 
         if (response.session.online) {
-            console.log('shound incorement ' + tickDelta)
             updates.$inc = {
                 'dailyHistory.29': tickDelta,
                 'monthlyHistory.0': tickDelta,
@@ -72,7 +71,6 @@ const loopStatuses = async () => {
 client.once('ready', async () => {
     try {
         console.log(`Logged in as ${client.user.tag}!`);
-        console.log(await playerData.findMultiple({}).toArray());
         client.user.setActivity(`${await playerData.countDoucments({"discordID":{$ne:null}})} statuses`, { type: 'WATCHING' });
         
         lastTick = Date.now();
