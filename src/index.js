@@ -40,7 +40,7 @@ const loopStatuses = async () => {
         const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player._id}`);
         if (response.success === false) {
             console.error('Hypixel Api Error: ' + response.cause);
-            return;
+            continue;
         }
 
         const dayUpdate = playerHelpers.changeDaysUpdate(player.lastIncremented, now);
@@ -63,7 +63,7 @@ const loopStatuses = async () => {
             notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
         }
 
-        if (!response.session.online && response.session.online === player.online) return;
+        if (!response.session.online && response.session.online === player.online) continue;
         updates.$set.lastIncremented = now;
         playerData.updateOne({_id: player._id}, updates);
     }
