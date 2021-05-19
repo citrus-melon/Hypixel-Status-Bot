@@ -51,7 +51,7 @@ const loopStatuses = async () => {
 
         if (response.session.online) {
             updates.$inc = {
-                'dailyHistory.29': tickDelta,
+                'dailyHistory.0': tickDelta,
                 'monthlyHistory.0': tickDelta,
             }
             updates.$inc[`dailyTotals.${now.getDay()}`] = tickDelta;

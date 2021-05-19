@@ -16,10 +16,10 @@ module.exports.adjustDailyHistory = (history, lastIncremented, now) => {
             now - index > SKIP_DAY_THRESHOLD || now.getDate() !== index.getDate();
             index.setDate(index.getDate()+1)
         ) {
-            history.push(null);
-            history.shift();
+            history.unshift(null);
         }
     }
+    history.length = 30;
     return history;
 }
 
@@ -46,7 +46,7 @@ module.exports.changeDaysUpdate = (lastIncremented, now) => {
             now - index > SKIP_DAY_THRESHOLD || now.getDate() !== index.getDate();
             index.setDate(index.getDate()+1)
         ) {
-            addedDays.push(null);
+            addedDays.unshift(null);
         }
     }
     if (!addedDays.length) return null;
@@ -55,11 +55,11 @@ module.exports.changeDaysUpdate = (lastIncremented, now) => {
         + (now.getFullYear() - lastIncremented.getFullYear()) * 12;
     addedMonths = new Array(monthDelta).fill(null);
 
-    if(addedDays[addedDays.length-1] !== undefined) addedDays[addedDays.length-1] = 0;
+    if(addedDays[0] !== undefined) addedDays[0] = 0;
     if(addedMonths[0] !== undefined) addedMonths[0] = 0;
 
-    if (!addedMonths.length) updates.$push = {dailyHistory:{$each:addedDays, $slice:-30}};
-    else updates.$push = {dailyHistory:{$each:addedDays, $slice:-30}, monthlyHistory:{$each:addedMonths, $position: 0}}
+    updates.$push = {dailyHistory:{$each:addedDays, $slice:30, $position: 0}};
+    if (addedMonths.length) updates.$push.monthlyHistory = {$each:addedMonths, $position: 0}
     updates.$set = {lastIncremented: now};
     return updates;
 }

@@ -40,7 +40,7 @@ module.exports = class todayPlaytime extends Command {
         if (typeof player === 'string') { message.reply(player); return; }
 
         const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
-        const value = adjustedHistory[29-daysAgo];
+        const value = adjustedHistory[daysAgo];
         const username = await usernameCache.getUsernameByID(player._id);
         
         const embed = new MessageEmbed();

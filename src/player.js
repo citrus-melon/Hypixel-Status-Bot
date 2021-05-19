@@ -5,7 +5,7 @@ module.exports = class Player {
      * @param {boolean} [online] Whether or not the player is currently online
      * @param {number} [creationDate] The date that this player was first tracked
      * @param {number} [lastIncremented] The most reccent date the playtime statistics were incremented
-     * @param {?number[]} [dailyHistory] Total playtime for the past 30 days, 29th item is latest day
+     * @param {?number[]} [dailyHistory] Total playtime for the past 30 days, 0th item is latest day
      * @param {?number[]} [monthlyHistory] Total playtime for each month, 0th item is latest month
      * @param {number[]} [dailyTotals] Total playtime on each day of the week, 0th is Sunday
      */
@@ -20,7 +20,7 @@ module.exports = class Player {
         this.creationDate = creationDate || new Date();
         /**  @type {Date} lastIncremented The most reccent date the playtime statistics were incremented */
         this.lastIncremented = lastIncremented || this.creationDate;
-        /** @type {?number[]} dailyHistory Total playtime for the past 30 days, 29th item is latest day */
+        /** @type {?number[]} dailyHistory Total playtime for the past 30 days, 0th item is latest day */
         this.dailyHistory = dailyHistory || new Array(30).fill(null);
         /** @type {?number[]} monthlyHistory Total playtime for each month, 0th item is latest month*/
         this.monthlyHistory = monthlyHistory || [0];
