@@ -39,7 +39,7 @@ module.exports = class sevenDayPlaytime extends Command {
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
             const value = adjustedHistory[29-daysAgo];
             if (value === null) embed.addField(daysAgoString(daysAgo), '*untracked*');
-            else embed.addField(DAY_AGO_NAMES[daysAgo], friendlyDuration(value));
+            else embed.addField(daysAgoString(daysAgo), friendlyDuration(value));
             total += value;
         }
         embed.addField('Total', friendlyDuration(total));
