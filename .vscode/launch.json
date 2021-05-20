@@ -7,11 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
+            "name": "Readonly With Dotenv",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "test"
+                "readonly-dotenv"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "With Dotenv",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dotenv"
             ],
             "port": 9229,
             "skipFiles": [

@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "node -r dotenv/config src/index.js"
+    "dotenv": "node -r dotenv/config src/index.js",
+    "readonly-dotenv": "node -r dotenv/config src/readonlyTest.js"
   },
   "keywords": [],
   "author": "citrus-melon",
