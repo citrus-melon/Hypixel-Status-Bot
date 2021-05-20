@@ -49,8 +49,8 @@ module.exports = class todayPlaytime extends Command {
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
 
-        if (value === null) embed.setDescription(`${username} wasn't tracked ${daysAgoString(daysAgo)} days ago!`);
-        else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${daysAgoString(daysAgo)} days ago!`);
+        if (value === null) embed.setDescription(`${username} wasn't tracked ${daysAgoString(daysAgo)}!`);
+        else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${daysAgoString(daysAgo)}!`);
 
         message.reply(embed);
     }
