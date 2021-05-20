@@ -8,8 +8,7 @@ const notification = require('./notification');
 
 const client = new CommandoClient({
     commandPrefix: 'h!',
-    owner: '711250473742499892',
-    invite: 'https://discord.gg/cuRGH6Pc4k',
+    owner: process.env.OWNER_ID
 });
 
 client.registry
