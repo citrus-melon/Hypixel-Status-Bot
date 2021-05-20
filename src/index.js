@@ -16,7 +16,7 @@ client.registry
     .registerGroups([
         ['account', 'Account Management'],
         ['time', 'Playtime Totals'],
-        ['graphs', 'Playtime Graphs']
+        ['charts', 'Playtime Charts']
     ])
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));

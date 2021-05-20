@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "bent": "^7.3.12",
+    "chart.js": "^3.2.1",
+    "chartjs-node-canvas": "^3.1.0",
     "discord.js": "^12.5.1",
     "discord.js-commando": "github:discordjs/Commando",
     "mongodb": "^3.6.6"
