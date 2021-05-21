@@ -36,7 +36,7 @@ module.exports = class SevenDayChart extends Command {
         const slicedHistory = adjustedHistory.slice(0, 7);
         const username = await usernameCache.getUsernameByID(player._id);
 
-        const chart = new Chart(slicedHistory, username);
+        const chart = new Chart(slicedHistory, username, '7 Day Playtime History');
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `seven_day_playtime.png`);
         message.reply(attachment);

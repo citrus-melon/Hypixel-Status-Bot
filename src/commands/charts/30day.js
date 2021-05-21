@@ -35,7 +35,7 @@ module.exports = class ThirtyDayChart extends Command {
         const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
         const username = await usernameCache.getUsernameByID(player._id);
 
-        const chart = new Chart(adjustedHistory, username);
+        const chart = new Chart(adjustedHistory, username, '30 Day Playtime History');
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `thirty_day_playtime.png`);
         message.reply(attachment);
