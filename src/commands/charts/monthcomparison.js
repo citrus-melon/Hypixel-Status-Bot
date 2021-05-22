@@ -2,6 +2,7 @@ const { MessageAttachment } = require('discord.js');
 const { Command } = require('discord.js-commando');
 const chartRenderer = require('../../chartRenderer');
 const Chart = require('../../charts/comparison');
+const { months } = require('../../helpers/agoString');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
@@ -49,7 +50,7 @@ module.exports = class WeekmonthTotalsChart extends Command {
             usernames.push(await usernameCache.getUsernameByID(player._id));
         }
 
-        const chart = new Chart(players, usernames, `${monthsAgo} Months Ago Playtime Comparison`);
+        const chart = new Chart(players, usernames, `${months(monthsAgo)} Months Ago Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `month_comparision.png`);
         message.reply(attachment);

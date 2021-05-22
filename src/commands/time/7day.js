@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
-const daysAgoString = require('../../helpers/daysAgoString');
+const agoString = require('../../helpers/agoString');
 const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
@@ -38,8 +38,8 @@ module.exports = class sevenDayPlaytime extends Command {
 
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
             const value = adjustedHistory[daysAgo];
-            if (value === null) embed.addField(daysAgoString(daysAgo, true), '*untracked*');
-            else embed.addField(daysAgoString(daysAgo, true), friendlyDuration(value));
+            if (value === null) embed.addField(agoString.days(daysAgo, true), '*untracked*');
+            else embed.addField(agoString.days(daysAgo, true), friendlyDuration(value));
             total += value;
         }
         embed.addField('Total', friendlyDuration(total));

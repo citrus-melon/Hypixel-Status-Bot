@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
-const daysAgoString = require('../../helpers/daysAgoString');
+const agoString = require('../../helpers/agoString');
 const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
@@ -49,8 +49,8 @@ module.exports = class todayPlaytime extends Command {
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
 
-        if (value === null) embed.setDescription(`${username} wasn't tracked ${daysAgoString(daysAgo)}!`);
-        else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${daysAgoString(daysAgo)}!`);
+        if (value === null) embed.setDescription(`${username} wasn't tracked ${agoString.days(daysAgo)}!`);
+        else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${agoString.days(daysAgo)}!`);
 
         message.reply(embed);
     }

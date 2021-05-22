@@ -2,7 +2,7 @@ const { MessageAttachment } = require('discord.js');
 const { Command } = require('discord.js-commando');
 const chartRenderer = require('../../chartRenderer');
 const Chart = require('../../charts/comparison');
-const daysAgoString = require('../../helpers/daysAgoString');
+const agoString = require('../../helpers/agoString');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
@@ -50,7 +50,7 @@ module.exports = class WeekdayTotalsChart extends Command {
             usernames.push(await usernameCache.getUsernameByID(player._id));
         }
 
-        const chart = new Chart(players, usernames, `${daysAgoString(daysAgo, true)} Playtime Comparison`);
+        const chart = new Chart(players, usernames, `${agoString.days(daysAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `day_comparision.png`);
         message.reply(attachment);
