@@ -10,7 +10,7 @@ const nullBarPlugin =  {
         ctx.save();
         for (let i = 0; i < data.length; i++) {
             const value = data[i];
-            if (value !== null) continue;
+            if (value !== null && value !== undefined) continue;
             const x = xAxis.getPixelForValue(i);
             ctx.textAlign = 'center';
             ctx.font = 'italic bold 16px Helvetica';
