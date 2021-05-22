@@ -1,11 +1,13 @@
+const colors = require('./colors');
+
 module.exports = class weekdayTotalsChart {
     constructor(values, username) {
         const data = {
         	datasets: [{
             label: username,
             data: values,
-            borderColor: '#FF8888',
-            backgroundColor: '#FF888822',
+            borderColor: colors.ACCENTS[0],
+            backgroundColor: colors.ACCENTS[0] + colors.FILL_OPACITY,
             borderWidth: 2,
             borderRadius: 10,
             borderSkipped: 'bottom',

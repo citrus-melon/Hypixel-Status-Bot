@@ -1,5 +1,7 @@
+const colors = require("./colors");
+
 /** @param {number[]} values */
-const convertData = (values, label) => {
+const convertData = (values, label, color) => {
     const data = values.map((value, index) => {
         return {
             'x': index,
@@ -13,14 +15,14 @@ const convertData = (values, label) => {
         cubicInterpolationMode: 'monotone',
         tension: true,
         data: data,
-        borderColor: '#FF8888',
-        backgroundColor: '#FF888822',
+        borderColor: color,
+        backgroundColor: color + colors.FILL_OPACITY,
     }
 }
 
 module.exports = class historyChart {
     constructor(values, username) {
-        const dataset = convertData(values, username);
+        const dataset = convertData(values, username, colors.ACCENTS[0]);
         const options = {
             responsive: false,
             scales: {
