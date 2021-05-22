@@ -68,10 +68,10 @@ module.exports.changeDaysUpdate = (lastIncremented, now) => {
 module.exports.getDiscordOrMinecraft = async (search, projection) => {
     /** @type {import('../player')} */ let player;
     if (typeof search === 'string') { // It is a Minecraft ID
-        player = await playerData.findOne({'_id': search}, projection);
+        player = await playerData.findOne({'_id': search}, {projection: projection});
         if (!player) return `The player \`${await usernameCache.getUsernameByID(search)}\` does not have any tracked data!`;
     } else { // It is a Discord user
-        player = await playerData.findOne({'discordID': search.id}, projection);
+        player = await playerData.findOne({'discordID': search.id}, {projection: projection});
         if (!player) return`\`${search.tag}\` does not have a linked Minecraft account!`;
     }
     return player;
