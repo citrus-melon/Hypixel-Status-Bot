@@ -12,30 +12,36 @@ module.exports = class ThirtyDayChart extends Command {
             aliases: ['monthchart'],
             group: 'charts',
             memberName: '30day',
-            description: 'Get a player\'s playtime for the past 30 days, as a chart',
+            description: 'Get one or more players\' playtime for the past 30 days, as a chart',
             examples: ['30daychart', '30daychart citrus_melon', '30daychart @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {
-                    key: 'account',
+                    key: 'accounts',
                     label: 'player',
                     prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
                     type: 'mention|minecraftaccount',
-                    default: message => message.author
+                    infinite: true,
+                    default: message => [message.author]
                 }
             ]
         });
     }
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
-    async run(message, { account }) {
-        const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+    async run(message, { accounts }) {
+        const chartDatasets = [];
+        for (const account of accounts) {
+            const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
+            if (typeof player === 'string') { message.reply(player); return; }
 
-        const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
-        const username = await usernameCache.getUsernameByID(player._id);
+            chartDatasets.push({
+                history: playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date()),
+                username: await usernameCache.getUsernameByID(player._id)
+            })
+        }
 
-        const chart = new Chart(adjustedHistory, username, '30 Day Playtime History');
+        const chart = new Chart(chartDatasets, '30 Day Playtime History');
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `thirty_day_playtime.png`);
         message.reply(attachment);

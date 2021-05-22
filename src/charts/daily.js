@@ -6,8 +6,8 @@ const todayCallback = (value) => {
 }
 
 module.exports = class dailyHistoryChart extends historyChart {
-    constructor(values, username, title) {
-        let chart = super(values, username);
+    constructor(players, title) {
+        let chart = super(players);
         chart.options.scales.x.ticks.callback = todayCallback;
         chart.options.scales.x.title.text = 'Days Ago';
         chart.options.plugins.title.text = title;

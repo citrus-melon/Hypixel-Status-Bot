@@ -21,8 +21,14 @@ const convertData = (values, label, color) => {
 }
 
 module.exports = class historyChart {
-    constructor(values, username) {
-        const dataset = convertData(values, username, colors.ACCENTS[0]);
+    constructor(players) {
+        const datasets = [];
+        for (let i = 0; i < players.length; i++) {
+            const player = players[i];
+            const color = colors.ACCENTS[i % colors.ACCENTS.length];
+            datasets.push(convertData(player.history, player.username, color));
+        }
+
         const options = {
             responsive: false,
             scales: {
@@ -48,11 +54,11 @@ module.exports = class historyChart {
                 }
             }
         }
+
         return {
             type: 'line',
-            data: {datasets: [dataset]},
+            data: {datasets: datasets},
             options: options
         };
-        
     }
 }
