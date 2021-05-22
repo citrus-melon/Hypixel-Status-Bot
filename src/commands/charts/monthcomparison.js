@@ -39,6 +39,8 @@ module.exports = class WeekmonthTotalsChart extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { accounts, monthsAgo }) {
+        if (accounts.length < 2 || accounts.length > 10) return message.reply('Please enter between 2-10 players!');
+
         const players = [];
         const usernames = [];
 

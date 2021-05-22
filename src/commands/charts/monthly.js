@@ -29,6 +29,8 @@ module.exports = class MonthlyChart extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { accounts }) {
+        if (accounts.length > 10) return message.reply('Please enter less than 10 players!');
+
         const chartDatasets = [];
         for (const account of accounts) {
             const player = await playerHelpers.getDiscordOrMinecraft(account, {monthlyHistory: 1, lastIncremented: 1});
