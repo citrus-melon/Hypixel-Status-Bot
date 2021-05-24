@@ -38,7 +38,7 @@ module.exports = class SevenDayChart extends Command {
             if (typeof player === 'string') { message.reply(player); return; }
 
             const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
-            chartDatas.push({
+            chartDatasets.push({
                 history: adjustedHistory.slice(0, 7),
                 username: await usernameCache.getUsernameByID(player._id)
             })
