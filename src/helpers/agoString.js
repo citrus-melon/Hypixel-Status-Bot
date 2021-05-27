@@ -14,8 +14,10 @@ module.exports.days = (input, title) => {
 module.exports.months = (input, title) => {
     if (title) {
         if (input === 0) return 'This Month';
+        if (input === 1) return 'Last Month';
         return input + ' Months Ago';
     }
     if (input === 0) return 'this month';
+    if (input === 1) return 'last month';
     return input + ' months ago';
 }
