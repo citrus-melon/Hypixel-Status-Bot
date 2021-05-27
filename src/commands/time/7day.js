@@ -34,7 +34,7 @@ module.exports = class sevenDayPlaytime extends Command {
         const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
         const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
-        let total = adjustedHistory[29];
+        let total = 0;
 
         for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
             const value = adjustedHistory[daysAgo];
