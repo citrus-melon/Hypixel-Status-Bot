@@ -42,7 +42,10 @@ module.exports = class sevenDayPlaytime extends Command {
             else embed.addField(agoString.days(daysAgo, true), friendlyDuration(value));
             total += value;
         }
+
         embed.addField('Total', friendlyDuration(total));
+        const average = Math.round(total / 7);
+        embed.addField('Average', friendlyDuration(average));
 
         embed.setAuthor(username, `https://crafatar.com/avatars/${player._id}`, `https://namemc.com/profile/${player._id}`);
         embed.setTitle(`${username}'s 7-day playtime`);
