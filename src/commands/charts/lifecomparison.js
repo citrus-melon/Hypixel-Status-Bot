@@ -13,7 +13,7 @@ module.exports = class lifetimeComparision extends Command {
             group: 'charts',
             memberName: 'lifecomparision',
             description: 'Compare the total lifetime playtime of multiple players.',
-            examples: ['comparelife', 'comparelife citrus_melon', 'comparelife @citrus-melon'],
+            examples: ['lifecomparision @citrus_melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {

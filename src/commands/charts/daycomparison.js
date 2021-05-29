@@ -14,7 +14,7 @@ module.exports = class dayComparision extends Command {
             group: 'charts',
             memberName: 'daycomparision',
             description: 'Compare the playtime of multiple players on a certain day.',
-            examples: ['compareday', 'compareday citrus_melon', 'compareday @citrus-melon'],
+            examples: ['daycomparison 0 @citrus-melon yambots', 'daycomparison 5 @citrus-melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {

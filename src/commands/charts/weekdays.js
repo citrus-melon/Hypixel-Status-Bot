@@ -13,7 +13,7 @@ module.exports = class weekdayTotalsChart extends Command {
             group: 'charts',
             memberName: 'weekdays',
             description: 'Graph a player\'s total playtime by weekday.',
-            examples: ['weekdayschart', 'weekdayschart citrus_melon', 'weekdayschart @citrus-melon'],
+            examples: ['weekdayschart', 'weekdayschart citrus_melon', 'weekdayschart @citrus-melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {

@@ -13,7 +13,7 @@ module.exports = class sevenDayChart extends Command {
             group: 'charts',
             memberName: '7day',
             description: 'Graph one or more players\' playtime for the past 7 days.',
-            examples: ['7daychart', '7daychart citrus_melon', '7daychart @citrus-melon'],
+            examples: ['7daychart', '7daychart citrus_melon', '7daychart @citrus-melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {

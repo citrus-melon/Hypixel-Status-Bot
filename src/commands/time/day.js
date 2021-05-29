@@ -14,7 +14,7 @@ module.exports = class dayPlaytime extends Command {
             memberName: 'day',
             description: 'Get a player\'s total tracked playtime on a certain day.',
             details: 'The specified day can be up to 29 days ago. For example, 1 day ago is yesterday.',
-            examples: ['day 3', 'day 3 citrus_melon', 'day 3 @citrus-melon'],
+            examples: ['day', 'day citrus_melon 3', 'day @citrus-melon 2'],
             throttling: {duration: 10, usages: 5},
             args: [
                 {

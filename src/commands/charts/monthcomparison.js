@@ -14,7 +14,7 @@ module.exports = class monthComparision extends Command {
             group: 'charts',
             memberName: 'monthcomparision',
             description: 'Compare the playtime of multiple players during a certain month.',
-            examples: ['comparemonth', 'comparemonth citrus_melon', 'comparemonth @citrus-melon'],
+            examples: ['monthcomparison 1 @citrus_melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {
@@ -24,7 +24,7 @@ module.exports = class monthComparision extends Command {
                     max: 29,
                     min: 0,
                     default: 0,
-                    prompt: 'How many months ago is the month you would like to get? (Ex. yestermonth = 1)'
+                    prompt: 'How many months ago is the month you would like to get? (Ex. last month = 1)'
                 },
                 {
                     key: 'accounts',

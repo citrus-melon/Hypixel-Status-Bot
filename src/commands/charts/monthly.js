@@ -13,7 +13,7 @@ module.exports = class monthlyChart extends Command {
             group: 'charts',
             memberName: 'monthly',
             description: 'Graph one or more players\' monthly playtime, as a chart.',
-            examples: ['monthlychart', 'monthlychart citrus_melon', 'monthlychart @citrus-melon'],
+            examples: ['monthlychart', 'monthlychart citrus_melon', 'monthlychart @citrus-melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {
