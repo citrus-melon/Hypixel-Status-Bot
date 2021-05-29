@@ -8,8 +8,8 @@ const usernameCache = require('../../usernameCache');
 module.exports = class lifetimeComparision extends Command {
     constructor(client) {
         super(client, {
-            name: 'lifecomparison',
-            aliases: ['comparelifechart', 'comparelife', 'lifecomparisonchart', 'lifecompare'],
+            name: 'lifetimecomparison',
+            aliases: ['lifecomparison', 'comparelifechart', 'comparelife', 'lifecomparisonchart', 'lifecompare'],
             group: 'charts',
             memberName: 'lifecomparision',
             description: 'Compare the total lifetime playtime of multiple players.',
