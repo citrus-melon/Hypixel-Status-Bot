@@ -5,15 +5,15 @@ const Chart = require('../../charts/comparison');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class lifetimeComparision extends Command {
+module.exports = class lifetimeComparison extends Command {
     constructor(client) {
         super(client, {
             name: 'lifetimecomparison',
             aliases: ['lifecomparison', 'lifecompare', 'comparelife', 'comparelifetime', 'cl', 'lifetimecompare'],
             group: 'charts',
-            memberName: 'lifecomparision',
+            memberName: 'lifecomparison',
             description: 'Compare the total lifetime playtime of multiple players.',
-            examples: ['lifecomparision @citrus_melon yambots'],
+            examples: ['lifecomparison @citrus_melon yambots'],
             throttling: {duration: 10, usages: 3},
             args: [
                 {
@@ -45,9 +45,9 @@ module.exports = class lifetimeComparision extends Command {
             usernames.push(await usernameCache.getUsernameByID(player._id));
         }
 
-        const chart = new Chart(players, usernames, 'Lifetime Playtime Comparision');
+        const chart = new Chart(players, usernames, 'Lifetime Playtime Comparison');
         const image = await chartRenderer.renderToBuffer(chart);
-        const attachment = new MessageAttachment(image, `life_comparision.png`);
+        const attachment = new MessageAttachment(image, `life_comparison.png`);
         return message.reply(attachment);
     }
 };

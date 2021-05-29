@@ -6,13 +6,13 @@ const { months } = require('../../helpers/agoString');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class monthComparision extends Command {
+module.exports = class monthComparison extends Command {
     constructor(client) {
         super(client, {
             name: 'monthcomparison',
-            aliases: ['comparemonth', 'comparemonthchart','monthcomparisionchart', 'monthcomapare', 'cm'],
+            aliases: ['comparemonth', 'comparemonthchart','monthcomparisonchart', 'monthcomapare', 'cm'],
             group: 'charts',
-            memberName: 'monthcomparision',
+            memberName: 'monthcomparison',
             description: 'Compare the playtime of multiple players during a certain month.',
             examples: ['monthcomparison 1 @citrus_melon yambots'],
             throttling: {duration: 10, usages: 3},
@@ -54,7 +54,7 @@ module.exports = class monthComparision extends Command {
 
         const chart = new Chart(players, usernames, `${months(monthsAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
-        const attachment = new MessageAttachment(image, `month_comparision.png`);
+        const attachment = new MessageAttachment(image, `month_comparison.png`);
         return message.reply(attachment);
     }
 };

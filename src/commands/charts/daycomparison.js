@@ -6,13 +6,13 @@ const agoString = require('../../helpers/agoString');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class dayComparision extends Command {
+module.exports = class dayComparison extends Command {
     constructor(client) {
         super(client, {
             name: 'daycomparison',
             aliases: ['compareday', 'comparedaychart', 'daycomparsionchart', 'daycompare', 'cd'],
             group: 'charts',
-            memberName: 'daycomparision',
+            memberName: 'daycomparison',
             description: 'Compare the playtime of multiple players on a certain day.',
             examples: ['daycomparison 0 @citrus-melon yambots', 'daycomparison 5 @citrus-melon yambots'],
             throttling: {duration: 10, usages: 3},
@@ -54,7 +54,7 @@ module.exports = class dayComparision extends Command {
 
         const chart = new Chart(players, usernames, `${agoString.days(daysAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
-        const attachment = new MessageAttachment(image, `day_comparision.png`);
+        const attachment = new MessageAttachment(image, `day_comparison.png`);
         return message.reply(attachment);
     }
 };

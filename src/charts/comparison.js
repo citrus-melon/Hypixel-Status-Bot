@@ -21,7 +21,7 @@ const nullBarPlugin =  {
     }
 }
 
-module.exports = class ComparisionChart {
+module.exports = class ComparisonChart {
     constructor(values, usernames, title) {
         const data = {
         	datasets: [{
