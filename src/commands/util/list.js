@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord.js-commando');
 const playerData = require('../../playerData');
 const usernameCache = require('../../usernameCache');
@@ -25,8 +26,10 @@ module.exports = class listPlayers extends Command {
             response += `\n**${username}** is online`
         }
 
-        response += `\n\nGame, mode, and map status coming "soon" (I'm lazy)!`
-
+        const embed = new MessageEmbed();
+        embed.setTitle('Online Players');
+        embed.setDescription(response);
+        embed.setFooter('(Updated every 30 seconds)')
         message.reply(response);
     }
 };

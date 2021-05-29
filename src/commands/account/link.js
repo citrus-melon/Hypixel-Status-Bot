@@ -37,6 +37,8 @@ module.exports = class linkPlayer extends Command {
             return;
         }
 
+        const mcUsername = await usernameCache.getUsernameByID(mcAccount);
+
         const blankValues = new Player();
         delete blankValues._id;
         delete blankValues.discordID;
@@ -47,12 +49,12 @@ module.exports = class linkPlayer extends Command {
                 { $set: { 'discordID': discordAccount.id }, $setOnInsert: blankValues },
                 { upsert: true }
             )
-            message.reply(`Sucessfully linked ${discordAccount.tag} to ${await usernameCache.getUsernameByID(mcAccount)}!`)
+            message.reply(`Sucessfully linked ${discordAccount.tag} to ${mcUsername}!`)
         } catch (err) {
             if (err.code === 11000 && err.keyPattern.discordID) {
-                message.reply('You already have a linked Minecraft account!');
+                message.reply(`\`${discordAccount.tag}\` already has a linked Minecraft account!`);
             } else if (err.code === 11000 && err.keyPattern._id) {
-                message.reply('That Minecraft account is already linked to a Discord member!');
+                message.reply(`\`${mcUsername}\` is already linked to a Discord user!`);
             } else throw err;
         }
     }

@@ -28,6 +28,6 @@ module.exports = class rawData extends Command {
         const player = await playerHelpers.getDiscordOrMinecraft(account);
         if (typeof player === 'string') { message.reply(player); return; }
         
-        message.reply('Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':```json\n' + JSON.stringify(player, null, 2) + '```');
+        message.reply('**Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':**```json\n' + JSON.stringify(player, null, 2) + '```');
     }
 };

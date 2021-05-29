@@ -52,7 +52,7 @@ module.exports = class WeekmonthTotalsChart extends Command {
             usernames.push(await usernameCache.getUsernameByID(player._id));
         }
 
-        const chart = new Chart(players, usernames, `${months(monthsAgo)} Months Ago Playtime Comparison`);
+        const chart = new Chart(players, usernames, `${months(monthsAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `month_comparision.png`);
         message.reply(attachment);

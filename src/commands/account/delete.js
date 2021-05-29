@@ -29,7 +29,7 @@ module.exports = class ClassName extends Command {
         let result;
         if (typeof account === 'string') { // It is a Minecraft ID
             result = (await playerData.findOneAndDelete({'_id': account}, OPTIONS)).value;
-            if (!result) return message.reply(`The player \`${await usernameCache.getUsernameByID(account)}\` does not have any tracked data!`);
+            if (!result) return message.reply(`The player \`${await usernameCache.getUsernameByID(account)}\` does not have any associated data!`);
         } else { // It is a Discord user
             result = (await playerData.findOneAndDelete({'discordID': account.id}, OPTIONS)).value;
             if (!result) return message.reply(`\`${account.tag}\` does not have a linked Minecraft account!`);
