@@ -1,6 +1,6 @@
 const colors = require('./colors');
 
-module.exports = class weekdayTotalsChart {
+module.exports = class WeekdayTotalsChart {
     constructor(values, username) {
         const data = {
         	datasets: [{

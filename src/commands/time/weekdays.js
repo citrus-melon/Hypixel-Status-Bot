@@ -6,7 +6,7 @@ const usernameCache = require('../../usernameCache');
 
 const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-module.exports = class lifetimePlaytime extends Command {
+module.exports = class weekdayTotals extends Command {
     constructor(client) {
         super(client, {
             name: 'weekdays',

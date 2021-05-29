@@ -5,7 +5,7 @@ const Chart = require('../../charts/weekdays');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class WeekdayTotalsChart extends Command {
+module.exports = class weekdayTotalsChart extends Command {
     constructor(client) {
         super(client, {
             name: 'weekdayschart',

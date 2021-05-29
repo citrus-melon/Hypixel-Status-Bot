@@ -1,6 +1,6 @@
 const historyChart = require("./history");
 
-module.exports = class monthlyHistoryChart extends historyChart {
+module.exports = class MonthlyHistoryChart extends historyChart {
     constructor(values) {
         let chart = super(values);
         chart.options.scales.x.title.text = 'Months Ago';

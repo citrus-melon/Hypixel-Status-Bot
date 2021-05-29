@@ -5,7 +5,7 @@ const Chart = require('../../charts/comparison');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class WeeklifeTotalsChart extends Command {
+module.exports = class lifetimeComparision extends Command {
     constructor(client) {
         super(client, {
             name: 'lifecomparison',

@@ -6,7 +6,7 @@ const { months } = require('../../helpers/agoString');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class WeekmonthTotalsChart extends Command {
+module.exports = class monthComparision extends Command {
     constructor(client) {
         super(client, {
             name: 'monthcomparison',

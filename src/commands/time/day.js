@@ -5,7 +5,7 @@ const friendlyDuration = require('../../helpers/friendlyDuration');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class todayPlaytime extends Command {
+module.exports = class dayPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: 'day',

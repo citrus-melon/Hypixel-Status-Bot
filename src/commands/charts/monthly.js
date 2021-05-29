@@ -5,7 +5,7 @@ const Chart = require('../../charts/monthly');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class MonthlyChart extends Command {
+module.exports = class monthlyChart extends Command {
     constructor(client) {
         super(client, {
             name: 'monthlychart',

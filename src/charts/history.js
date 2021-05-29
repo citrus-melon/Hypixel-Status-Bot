@@ -20,7 +20,7 @@ const convertData = (values, label, color) => {
     }
 }
 
-module.exports = class historyChart {
+module.exports = class HistoryChart {
     constructor(players) {
         const datasets = [];
         for (let i = 0; i < players.length; i++) {

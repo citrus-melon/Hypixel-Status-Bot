@@ -4,7 +4,7 @@ const usernameCache = require('../../usernameCache');
 
 const OPTIONS = {projection: {'_id': 1}}
 
-module.exports = class ClassName extends Command {
+module.exports = class deleteData extends Command {
     constructor(client) {
         super(client, {
             name: 'deletedata',

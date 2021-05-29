@@ -5,7 +5,7 @@ const todayCallback = (value) => {
     else return value;
 }
 
-module.exports = class dailyHistoryChart extends historyChart {
+module.exports = class DailyHistoryChart extends historyChart {
     constructor(players, title) {
         let chart = super(players);
         chart.options.scales.x.ticks.callback = todayCallback;

@@ -5,7 +5,7 @@ const Chart = require('../../charts/daily');
 const playerHelpers = require('../../helpers/playerHelpers');
 const usernameCache = require('../../usernameCache');
 
-module.exports = class ThirtyDayChart extends Command {
+module.exports = class thirtyDayChart extends Command {
     constructor(client) {
         super(client, {
             name: '30daychart',
