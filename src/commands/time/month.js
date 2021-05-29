@@ -11,7 +11,7 @@ module.exports = class monthPlaytime extends Command {
             name: 'month',
             group: 'time',
             memberName: 'month',
-            description: 'Get a player\'s total tracked playtime during a certain month. Defaults to the current month.',
+            description: 'Get a player\'s total tracked playtime during a certain month.',
             examples: ['month', 'month citrus_melon', 'month @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [

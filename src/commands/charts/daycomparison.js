@@ -13,7 +13,7 @@ module.exports = class WeekdayTotalsChart extends Command {
             aliases: ['comparedaychart', 'compareday', 'daycomparisonchart', 'daycompare'],
             group: 'charts',
             memberName: 'daycomparision',
-            description: 'Compare the playtime of multiple players on a certain day',
+            description: 'Compare the playtime of multiple players on a certain day.',
             examples: ['compareday', 'compareday citrus_melon', 'compareday @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [

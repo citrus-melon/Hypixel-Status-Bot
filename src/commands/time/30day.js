@@ -11,7 +11,7 @@ module.exports = class sevenDayPlaytime extends Command {
             name: '30day',
             group: 'time',
             memberName: '30day',
-            description: 'Get a player\'s total playtime in the past 30 days',
+            description: 'Get a player\'s total playtime in the past 30 days.',
             examples: ['30day', '30day citrus_melon', '30day @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [

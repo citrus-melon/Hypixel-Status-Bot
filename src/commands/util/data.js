@@ -8,7 +8,7 @@ module.exports = class rawData extends Command {
             name: 'rawdata',
             group: 'util',
             memberName: 'data',
-            description: 'Get all data associated with a player, in JSON form',
+            description: 'Get all data associated with a player, in JSON form.',
             examples: ['rawdata', 'rawdata citrus_melon', 'rawdata @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [

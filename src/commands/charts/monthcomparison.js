@@ -13,7 +13,7 @@ module.exports = class WeekmonthTotalsChart extends Command {
             aliases: ['comparemonthchart', 'comparemonth', 'monthcomparisonchart', 'monthcompare'],
             group: 'charts',
             memberName: 'monthcomparision',
-            description: 'Compare the playtime of multiple players during a certain month',
+            description: 'Compare the playtime of multiple players during a certain month.',
             examples: ['comparemonth', 'comparemonth citrus_melon', 'comparemonth @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [

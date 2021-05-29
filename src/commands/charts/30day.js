@@ -12,7 +12,7 @@ module.exports = class ThirtyDayChart extends Command {
             aliases: ['monthchart'],
             group: 'charts',
             memberName: '30day',
-            description: 'Get one or more players\' playtime for the past 30 days, as a chart',
+            description: 'Graph one or more players\' playtime for the past 30 days, as a chart.',
             examples: ['30daychart', '30daychart citrus_melon', '30daychart @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [

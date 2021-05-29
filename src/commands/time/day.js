@@ -12,7 +12,7 @@ module.exports = class todayPlaytime extends Command {
             aliases: ['today', 'daytotal'],
             group: 'time',
             memberName: 'day',
-            description: 'Get a player\'s total tracked playtime on a specific day, up to 29 days ago. Defaults to today.',
+            description: 'Get a player\'s total tracked playtime on a certain day.',
             examples: ['day 3', 'day 3 citrus_melon', 'day 3 @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [

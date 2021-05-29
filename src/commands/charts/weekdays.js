@@ -12,7 +12,7 @@ module.exports = class WeekdayTotalsChart extends Command {
             aliases: ['weekdaychart'],
             group: 'charts',
             memberName: 'weekdays',
-            description: 'Get a player\'s total playtime by weekday, as a chart',
+            description: 'Graph a player\'s total playtime by weekday.',
             examples: ['weekdayschart', 'weekdayschart citrus_melon', 'weekdayschart @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [

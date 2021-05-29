@@ -12,7 +12,7 @@ module.exports = class lifetimePlaytime extends Command {
             name: 'weekdays',
             group: 'time',
             memberName: 'weekdays',
-            description: 'Get a player\'s total playtime per weekday',
+            description: 'Get a player\'s total playtime per weekday.',
             examples: ['weekdays', 'weekdays citrus_melon', 'weekdays @citrus-melon'],
             throttling: {duration: 10, usages: 5},
             args: [

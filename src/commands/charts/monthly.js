@@ -11,7 +11,7 @@ module.exports = class MonthlyChart extends Command {
             name: 'monthlychart',
             group: 'charts',
             memberName: 'monthly',
-            description: 'Get one or more players\' monthly playtime, as a chart',
+            description: 'Graph one or more players\' monthly playtime, as a chart.',
             examples: ['monthlychart', 'monthlychart citrus_melon', 'monthlychart @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [

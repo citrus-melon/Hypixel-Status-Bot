@@ -8,7 +8,7 @@ module.exports = class listPlayers extends Command {
             name: 'list',
             group: 'util',
             memberName: 'list',
-            description: 'List the current online players',
+            description: 'List the current online players.',
             examples: ['list'],
             throttling: {duration: 10, usages: 2}
         });

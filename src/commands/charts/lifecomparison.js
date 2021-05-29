@@ -12,7 +12,7 @@ module.exports = class WeeklifeTotalsChart extends Command {
             aliases: ['comparelifechart', 'comparelife', 'lifecomparisonchart', 'lifecompare'],
             group: 'charts',
             memberName: 'lifecomparision',
-            description: 'Compare the total lifetime playtime of multiple players',
+            description: 'Compare the total lifetime playtime of multiple players.',
             examples: ['comparelife', 'comparelife citrus_melon', 'comparelife @citrus-melon'],
             throttling: {duration: 10, usages: 3},
             args: [
