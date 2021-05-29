@@ -35,7 +35,7 @@ module.exports = class sevenDayChart extends Command {
         const chartDatasets = [];
         for (const account of accounts) {
             const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
-            if (typeof player === 'string') { message.reply(player); return; }
+            if (typeof player === 'string') return message.reply(player);
 
             const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
             chartDatasets.push({
@@ -47,6 +47,6 @@ module.exports = class sevenDayChart extends Command {
         const chart = new Chart(chartDatasets, '7 Day Playtime History');
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `seven_day_playtime.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };

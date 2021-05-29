@@ -26,8 +26,8 @@ module.exports = class rawData extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account);
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
         
-        message.reply('**Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':**```json\n' + JSON.stringify(player, null, 2) + '```');
+        return message.reply('**Raw data for ' + await usernameCache.getUsernameByID(player._id) + ':**```json\n' + JSON.stringify(player, null, 2) + '```');
     }
 };

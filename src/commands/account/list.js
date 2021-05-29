@@ -30,6 +30,6 @@ module.exports = class listPlayers extends Command {
         embed.setTitle('Online Players');
         embed.setDescription(response);
         embed.setFooter('(Updated every 30 seconds)')
-        message.reply(response);
+        return message.reply(embed);
     }
 };

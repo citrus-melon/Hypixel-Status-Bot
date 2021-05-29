@@ -28,7 +28,7 @@ module.exports = class lifetimePlaytime extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyTotals: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
     
         let sum = 0;
         for (const day of player.dailyTotals) sum += day;
@@ -41,6 +41,6 @@ module.exports = class lifetimePlaytime extends Command {
         embed.setDescription(`${username} has played for **${friendlyDuration(sum)}** in total!`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.reply(embed);
+        return message.reply(embed);
     }
 };

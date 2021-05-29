@@ -48,6 +48,6 @@ module.exports = class lifetimeComparision extends Command {
         const chart = new Chart(players, usernames, 'Lifetime Playtime Comparision');
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `life_comparision.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };

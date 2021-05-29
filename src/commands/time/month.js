@@ -38,7 +38,7 @@ module.exports = class monthPlaytime extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account, monthsAgo }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {monthlyHistory: 1, lastIncremented: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
 
         const adjustedHistory = playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date());
         const value = adjustedHistory[monthsAgo];
@@ -53,6 +53,6 @@ module.exports = class monthPlaytime extends Command {
         if (value === null || value === undefined) embed.setDescription(`${username} wasn't tracked ${agoString.months(monthsAgo)}!`);
         else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${agoString.months(monthsAgo)}!`);
 
-        message.reply(embed);
+        return message.reply(embed);
     }
 };

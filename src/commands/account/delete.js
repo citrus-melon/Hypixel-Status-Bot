@@ -40,6 +40,6 @@ module.exports = class deleteData extends Command {
             result = (await playerData.findOneAndDelete({'discordID': account.id}, OPTIONS)).value;
             if (!result) return message.reply(`\`${account.tag}\` does not have a linked Minecraft account!`);
         }
-        message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(result._id)}\` has been permanantly deleted!`);
+        return message.reply(`The data associated with the player \`${await usernameCache.getUsernameByID(result._id)}\` has been permanantly deleted!`);
     }
 }

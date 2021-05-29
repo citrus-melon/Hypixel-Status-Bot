@@ -30,7 +30,7 @@ module.exports = class weekdayTotals extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyTotals: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
 
         const username = await usernameCache.getUsernameByID(player._id);
         const embed = new MessageEmbed();
@@ -48,6 +48,6 @@ module.exports = class weekdayTotals extends Command {
         embed.setTitle(`${username}'s total playtime by weekday`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.reply(embed);
+        return message.reply(embed);
     }
 };

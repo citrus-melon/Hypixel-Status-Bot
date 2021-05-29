@@ -29,7 +29,7 @@ module.exports = class sevenDayPlaytime extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
 
         const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
         const username = await usernameCache.getUsernameByID(player._id);
@@ -51,6 +51,6 @@ module.exports = class sevenDayPlaytime extends Command {
         embed.setTitle(`${username}'s 7-day playtime`);
         embed.setFooter('(Only while tracked)');
         embed.setTimestamp(player.lastIncremented);
-        message.reply(embed);
+        return message.reply(embed);
     }
 };

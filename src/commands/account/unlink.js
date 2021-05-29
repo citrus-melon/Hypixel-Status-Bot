@@ -44,6 +44,6 @@ module.exports = class unlinkPlayer extends Command {
         }
         const discordTag = this.client.users.cache.get(result.discordID).tag;
         role(this.client, result.discordID, false);
-        message.reply(`Sucessfully unlinked \`${await usernameCache.getUsernameByID(result._id)}\` from \`${discordTag}\`!`);
+        return message.reply(`Sucessfully unlinked \`${await usernameCache.getUsernameByID(result._id)}\` from \`${discordTag}\`!`);
     }
 };

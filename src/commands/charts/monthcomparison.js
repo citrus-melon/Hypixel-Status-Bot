@@ -55,6 +55,6 @@ module.exports = class monthComparision extends Command {
         const chart = new Chart(players, usernames, `${months(monthsAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `month_comparision.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };

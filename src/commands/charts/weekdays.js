@@ -30,13 +30,13 @@ module.exports = class weekdayTotalsChart extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyTotals: 1, lastIncremented: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
 
         const username = await usernameCache.getUsernameByID(player._id);
 
         const chart = new Chart(player.dailyTotals, username);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `weekday_playtime.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };

@@ -40,7 +40,7 @@ module.exports = class dayPlaytime extends Command {
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account, daysAgo }) {
         const player = await playerHelpers.getDiscordOrMinecraft(account, {dailyHistory: 1, lastIncremented: 1});
-        if (typeof player === 'string') { message.reply(player); return; }
+        if (typeof player === 'string') return message.reply(player);
 
         const adjustedHistory = playerHelpers.adjustDailyHistory(player.dailyHistory, player.lastIncremented, new Date());
         const value = adjustedHistory[daysAgo];
@@ -55,6 +55,6 @@ module.exports = class dayPlaytime extends Command {
         if (value === null) embed.setDescription(`${username} wasn't tracked ${agoString.days(daysAgo)}!`);
         else embed.setDescription(`${username} played **${friendlyDuration(value)}** in total ${agoString.days(daysAgo)}!`);
 
-        message.reply(embed);
+        return message.reply(embed);
     }
 };

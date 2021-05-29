@@ -34,7 +34,7 @@ module.exports = class monthlyChart extends Command {
         const chartDatasets = [];
         for (const account of accounts) {
             const player = await playerHelpers.getDiscordOrMinecraft(account, {monthlyHistory: 1, lastIncremented: 1});
-            if (typeof player === 'string') { message.reply(player); return; }
+            if (typeof player === 'string') return message.reply(player);
 
             chartDatasets.push({
                 adjustedHistory: playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date()),
@@ -45,6 +45,6 @@ module.exports = class monthlyChart extends Command {
         const chart = new Chart(chartDatasets);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `monthly_playtime.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };

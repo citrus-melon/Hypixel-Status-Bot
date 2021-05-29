@@ -55,6 +55,6 @@ module.exports = class dayComparision extends Command {
         const chart = new Chart(players, usernames, `${agoString.days(daysAgo, true)} Playtime Comparison`);
         const image = await chartRenderer.renderToBuffer(chart);
         const attachment = new MessageAttachment(image, `day_comparision.png`);
-        message.reply(attachment);
+        return message.reply(attachment);
     }
 };
