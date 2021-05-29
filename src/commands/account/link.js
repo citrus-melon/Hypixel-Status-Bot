@@ -10,6 +10,7 @@ module.exports = class linkPlayer extends Command {
             group: 'account',
             memberName: 'link',
             description: 'Link a Minecraft account to a Discord account.',
+            details: 'Server members with `Manage Nicknames` permission can link other players',
             examples: ['link citrus_melon', 'link citrus_melon @citrus-melon'],
             throttling: {duration: 180, usages: 1},
             args: [
