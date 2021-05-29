@@ -10,7 +10,7 @@ module.exports = class deleteData extends Command {
             name: 'deletedata',
             group: 'account',
             memberName: 'delete',
-            description: '*PERMANANTLY* delete all data associated with a player.',
+            description: '*PERMANENTLY* delete all data associated with a player.',
             examples: ['deletedata citrus_melon', 'deletedata @citrus-melon'],
             userPermissions: ['ADMINISTRATOR'],
             guildOnly: true,
@@ -27,6 +27,11 @@ module.exports = class deleteData extends Command {
     }
 
     async run(message, { account }) {
+        message.reply('Are you sure? Type `I understand this is permanent` to contine.');
+        const confirmationFilter = m => m.author === message.author;
+        const response = (await message.channel.awaitMessages(confirmationFilter, { max: 1, time: 20000})).first();
+        if (!response || response.content !== 'I understand this is permanent') return response.reply('Data deletion was canceled');
+
         let result;
         if (typeof account === 'string') { // It is a Minecraft ID
             result = (await playerData.findOneAndDelete({'_id': account}, OPTIONS)).value;
