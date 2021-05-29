@@ -8,6 +8,7 @@ module.exports = class deleteData extends Command {
     constructor(client) {
         super(client, {
             name: 'deletedata',
+            aliases: ['permanentdelete'],
             group: 'account',
             memberName: 'delete',
             description: '*PERMANENTLY* delete all data associated with a player.',

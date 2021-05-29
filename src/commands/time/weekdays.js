@@ -10,6 +10,7 @@ module.exports = class weekdayTotals extends Command {
     constructor(client) {
         super(client, {
             name: 'weekdays',
+            aliases: ['weekdaytotals', 'wd', 'twd', 'wdt'],
             group: 'time',
             memberName: 'weekdays',
             description: 'Get a player\'s total playtime per weekday.',

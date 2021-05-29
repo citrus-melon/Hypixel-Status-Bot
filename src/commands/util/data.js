@@ -6,6 +6,7 @@ module.exports = class rawData extends Command {
     constructor(client) {
         super(client, {
             name: 'rawdata',
+            aliases: ['data', 'export'],
             group: 'util',
             memberName: 'data',
             description: 'Get all data associated with a player, in JSON form.',

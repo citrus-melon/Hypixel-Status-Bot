@@ -9,7 +9,7 @@ module.exports = class lifetimeComparision extends Command {
     constructor(client) {
         super(client, {
             name: 'lifetimecomparison',
-            aliases: ['lifecomparison', 'comparelifechart', 'comparelife', 'lifecomparisonchart', 'lifecompare'],
+            aliases: ['lifecomparison', 'lifecompare', 'comparelife', 'comparelifetime', 'cl', 'lifetimecompare'],
             group: 'charts',
             memberName: 'lifecomparision',
             description: 'Compare the total lifetime playtime of multiple players.',

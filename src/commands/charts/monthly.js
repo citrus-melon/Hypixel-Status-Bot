@@ -9,6 +9,7 @@ module.exports = class monthlyChart extends Command {
     constructor(client) {
         super(client, {
             name: 'monthlychart',
+            aliases: ['mc', 'monthschart'],
             group: 'charts',
             memberName: 'monthly',
             description: 'Graph one or more players\' monthly playtime, as a chart.',

@@ -9,6 +9,7 @@ module.exports = class sevenDayPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: '7day',
+            aliases: ['pastweek', 'past7days', '7d', 'w', 'pw', 'p7d'],
             group: 'time',
             memberName: '7day',
             description: 'Get a player\'s playtime for the past 7 days.',

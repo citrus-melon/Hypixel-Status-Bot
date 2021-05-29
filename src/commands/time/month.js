@@ -9,6 +9,7 @@ module.exports = class monthPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: 'month',
+            aliases: ['m', 'monthtotal', 'thismonth', 'tm'],
             group: 'time',
             memberName: 'month',
             description: 'Get a player\'s total tracked playtime during a certain month.',

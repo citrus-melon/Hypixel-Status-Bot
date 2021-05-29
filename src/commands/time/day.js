@@ -9,7 +9,7 @@ module.exports = class dayPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: 'day',
-            aliases: ['today', 'daytotal'],
+            aliases: ['today', 'd', 't', 'daytotal', 'today'],
             group: 'time',
             memberName: 'day',
             description: 'Get a player\'s total tracked playtime on a certain day.',

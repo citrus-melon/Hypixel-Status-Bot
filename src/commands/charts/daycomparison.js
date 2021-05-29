@@ -10,7 +10,7 @@ module.exports = class dayComparision extends Command {
     constructor(client) {
         super(client, {
             name: 'daycomparison',
-            aliases: ['comparedaychart', 'compareday', 'daycomparisonchart', 'daycompare'],
+            aliases: ['compareday', 'comparedaychart', 'daycomparsionchart', 'daycompare', 'cd'],
             group: 'charts',
             memberName: 'daycomparision',
             description: 'Compare the playtime of multiple players on a certain day.',

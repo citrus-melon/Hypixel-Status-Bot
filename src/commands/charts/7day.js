@@ -9,7 +9,7 @@ module.exports = class sevenDayChart extends Command {
     constructor(client) {
         super(client, {
             name: '7daychart',
-            aliases: ['weekchart'],
+            aliases: ['pastweekchart', 'weekchart', 'past7dayschart', 'p7dc', '7dc', 'wc', 'pwc'],
             group: 'charts',
             memberName: '7day',
             description: 'Graph one or more players\' playtime for the past 7 days.',

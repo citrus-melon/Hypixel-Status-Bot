@@ -9,7 +9,7 @@ module.exports = class weekdayTotalsChart extends Command {
     constructor(client) {
         super(client, {
             name: 'weekdayschart',
-            aliases: ['weekdaychart'],
+            aliases: ['weekdaychart', 'wdc', 'weekdaytotalschart'],
             group: 'charts',
             memberName: 'weekdays',
             description: 'Graph a player\'s total playtime by weekday.',

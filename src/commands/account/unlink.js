@@ -10,6 +10,7 @@ module.exports = class unlinkPlayer extends Command {
     constructor(client) {
         super(client, {
             name: 'unlink',
+            aliases: ['untrack'],
             group: 'account',
             memberName: 'unlink',
             description: 'Unlink a Minecraft account from a Discord account.',

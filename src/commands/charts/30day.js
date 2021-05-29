@@ -9,7 +9,7 @@ module.exports = class thirtyDayChart extends Command {
     constructor(client) {
         super(client, {
             name: '30daychart',
-            aliases: ['monthchart'],
+            aliases: ['pastmonthchart', 'monthchart', 'past30dayschart', '30dc', 'p30dc', 'pmc'],
             group: 'charts',
             memberName: '30day',
             description: 'Graph one or more players\' playtime for the past 30 days, as a chart.',

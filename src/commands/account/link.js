@@ -7,6 +7,7 @@ module.exports = class linkPlayer extends Command {
     constructor(client) {
         super(client, {
             name: 'link',
+            aliases: ['track', 'add'],
             group: 'account',
             memberName: 'link',
             description: 'Link a Minecraft account to a Discord account.',

@@ -9,6 +9,7 @@ module.exports = class thirtyDayPlaytime extends Command {
     constructor(client) {
         super(client, {
             name: '30day',
+            aliases: ['pastmonth', 'past30days', '30d', 'pm', 'p30d'],
             group: 'time',
             memberName: '30day',
             description: 'Get a player\'s total playtime in the past 30 days.',
