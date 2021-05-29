@@ -32,9 +32,8 @@ module.exports = class linkPlayer extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { discordAccount, mcAccount }) {
-        if (discordAccount !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
-            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
-            return;
+        if (discordAccount !== message.author && (!message.member || !message.member.hasPermission('MANAGE_NICKNAMES'))) {
+            return message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
         }
 
         const mcUsername = await usernameCache.getUsernameByID(mcAccount);

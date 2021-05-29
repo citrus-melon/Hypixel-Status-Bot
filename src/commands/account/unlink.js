@@ -29,9 +29,8 @@ module.exports = class unlinkPlayer extends Command {
 
     /** @param {import('discord.js-commando').CommandoMessage} message */
     async run(message, { account }) {
-        if (account !== message.author && !message.member.hasPermission('MANAGE_NICKNAMES')) {
-            message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
-            return;
+        if (account !== message.author && (!message.member || !message.member.hasPermission('MANAGE_NICKNAMES'))) {
+            return message.reply('You need the `Manage Nicknames` permission to manage other accounts!');
         }
     
         let result;

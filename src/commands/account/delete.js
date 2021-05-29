@@ -13,6 +13,7 @@ module.exports = class deleteData extends Command {
             description: '*PERMANANTLY* delete all data associated with a player.',
             examples: ['deletedata citrus_melon', 'deletedata @citrus-melon'],
             userPermissions: ['ADMINISTRATOR'],
+            guildOnly: true,
             throttling: {duration: 20, usages: 1},
             args: [
                 {
