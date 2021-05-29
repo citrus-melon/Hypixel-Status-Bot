@@ -7,7 +7,7 @@ module.exports = class listPlayers extends Command {
     constructor(client) {
         super(client, {
             name: 'list',
-            group: 'util',
+            group: 'account',
             memberName: 'list',
             description: 'List the current online players.',
             examples: ['list'],
