@@ -15,7 +15,7 @@ module.exports = class linkPlayer extends Command {
             args: [
                 {
                     key: 'mcAccount',
-                    label: 'Minecraft Username',
+                    label: 'Minecraft username',
                     prompt: 'What is the username of the Minecraft account you would like to link?',
                     type: 'minecraftaccount',
                 },

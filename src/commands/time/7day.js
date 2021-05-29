@@ -18,7 +18,7 @@ module.exports = class sevenDayPlaytime extends Command {
                 {
                     key: 'account',
                     label: 'player',
-                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
+                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user.',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

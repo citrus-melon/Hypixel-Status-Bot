@@ -18,7 +18,7 @@ module.exports = class ClassName extends Command {
                 {
                     key: 'account',
                     label: 'player',
-                    prompt: 'What player would you like to delete data from? Enter a Minecraft username or mention a Discord user',
+                    prompt: 'What player would you like to delete data from? Enter a Minecraft username or mention a Discord user.',
                     type: 'mention|minecraftaccount'
                 }
             ]

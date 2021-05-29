@@ -18,7 +18,7 @@ module.exports = class MonthlyChart extends Command {
                 {
                     key: 'accounts',
                     label: 'player(s)',
-                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
+                    prompt: 'Whoose stats would you like to graph? Enter Minecraft usernames or mention Discord users.',
                     type: 'mention|minecraftaccount',
                     infinite: true,
                     default: message => [message.author]

@@ -18,8 +18,8 @@ module.exports = class ThirtyDayChart extends Command {
             args: [
                 {
                     key: 'accounts',
-                    label: 'player',
-                    prompt: 'Whoose stats would you like to get? Enter a Minecraft username or mention a Discord user',
+                    label: 'player(s)',
+                    prompt: 'Whoose stats would you like to graph? Enter Minecraft usernames or mention Discord users.',
                     type: 'mention|minecraftaccount',
                     infinite: true,
                     default: message => [message.author]

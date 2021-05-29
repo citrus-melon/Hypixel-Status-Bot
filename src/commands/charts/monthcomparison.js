@@ -29,7 +29,7 @@ module.exports = class WeekmonthTotalsChart extends Command {
                 {
                     key: 'accounts',
                     label: 'players',
-                    prompt: 'Please enter the players you would like to compare using Minecraft usernames or mention a Discord users.',
+                    prompt: 'Whoose stats would you like to compare? Enter Minecraft usernames or mention Discord users.',
                     type: 'mention|minecraftaccount',
                     infinite: true
                 }

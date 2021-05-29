@@ -15,7 +15,7 @@ module.exports = class rawData extends Command {
                 {
                     key: 'account',
                     label: 'player',
-                    prompt: 'What player would you like to get the data of? Enter a Minecraft username or mention a Discord user',
+                    prompt: 'Who would you like to get the data of? Enter a Minecraft username or mention a Discord user.',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 }

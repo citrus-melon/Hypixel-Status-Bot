@@ -19,7 +19,7 @@ module.exports = class unlinkPlayer extends Command {
                 {
                     key: 'account',
                     name: 'player',
-                    prompt: 'What player would you like to unlink?',
+                    prompt: 'What player would you like to unlink? Enter a Minecraft username or mention a Discord user.',
                     type: 'mention|minecraftaccount',
                     default: message => message.author
                 },
