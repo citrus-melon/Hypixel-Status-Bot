@@ -23,11 +23,6 @@ client.registry
 
 /** @type {number} */ let lastTick;
 
-const catchMissingMember = (err) => {
-    if (err.code !== 10007) throw err;
-    playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
-}
-
 const loopStatuses = async () => {
     const now = new Date();
     const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
@@ -59,6 +54,10 @@ const loopStatuses = async () => {
         if (response.session.online !== player.online) {
             updates.$set.online = response.session.online;
             notification.send(client, player._id, response.session.online);
+            const catchMissingMember = (err) => {
+                if (err.code !== 10007) throw err;
+                playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
+            }
             notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
         }
 
