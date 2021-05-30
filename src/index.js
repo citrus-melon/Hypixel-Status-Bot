@@ -21,7 +21,44 @@ client.registry
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
-/** @type {number} */ let lastTick;
+/** @type {number} */
+let lastTick;
+
+const tickPlayer = async (player) => {
+    const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player._id}`);
+    if (response.success === false) {
+        console.error('Hypixel Api Error: ' + response.cause);
+        return;
+    }
+
+    const dayUpdate = playerHelpers.changeDaysUpdate(player.lastIncremented, now);
+    if (dayUpdate) await playerData.updateOne({_id: player._id, lastIncremented: player.lastIncremented}, dayUpdate);
+
+    /** @type {import('mongodb').UpdateQuery<import('./player')>}*/
+    let updates = {$set:{}};
+
+    if (response.session.online) {
+        updates.$inc = {
+            'dailyHistory.0': tickDelta,
+            'monthlyHistory.0': tickDelta,
+        }
+        updates.$inc[`dailyTotals.${now.getDay()}`] = tickDelta;
+    }
+    
+    if (response.session.online !== player.online) {
+        updates.$set.online = response.session.online;
+        notification.send(client, player._id, response.session.online);
+        const catchMissingMember = (err) => {
+            if (err.code !== 10007) throw err;
+            playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
+        }
+        notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
+    }
+
+    if (!response.session.online && response.session.online === player.online) return;
+    updates.$set.lastIncremented = now;
+    playerData.updateOne({_id: player._id}, updates);
+}
 
 const loopStatuses = async () => {
     const now = new Date();
@@ -30,41 +67,8 @@ const loopStatuses = async () => {
 
     const players = await playerData.findMultiple({"discordID":{$ne:null}})
         .project({online: 1, lastIncremented: 1, discordID: 1});
-    for await (const player of players) {
-        const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player._id}`);
-        if (response.success === false) {
-            console.error('Hypixel Api Error: ' + response.cause);
-            continue;
-        }
-
-        const dayUpdate = playerHelpers.changeDaysUpdate(player.lastIncremented, now);
-        if (dayUpdate) await playerData.updateOne({_id: player._id, lastIncremented: player.lastIncremented}, dayUpdate);
-
-        /** @type {import('mongodb').UpdateQuery<import('./player')>}*/
-        let updates = {$set:{}};
-
-        if (response.session.online) {
-            updates.$inc = {
-                'dailyHistory.0': tickDelta,
-                'monthlyHistory.0': tickDelta,
-            }
-            updates.$inc[`dailyTotals.${now.getDay()}`] = tickDelta;
-        }
-        
-        if (response.session.online !== player.online) {
-            updates.$set.online = response.session.online;
-            notification.send(client, player._id, response.session.online);
-            const catchMissingMember = (err) => {
-                if (err.code !== 10007) throw err;
-                playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
-            }
-            notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
-        }
-
-        if (!response.session.online && response.session.online === player.online) continue;
-        updates.$set.lastIncremented = now;
-        playerData.updateOne({_id: player._id}, updates);
-    }
+    
+    players.forEach(tickPlayer);
 }
 
 client.once('ready', async () => {
