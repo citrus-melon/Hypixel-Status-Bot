@@ -75,12 +75,11 @@ function parseMessage(message) {
 function processMessage(message) {
     try {
         const parsedMessage = parseMessage(message);
-        const player = players.get(parsedMessage.mcID);
+        let player = players.get(parsedMessage.mcID);
         if (!player) {
-            const newPlayer = new Player(parsedMessage.mcID, null, parsedMessage.online, parsedMessage.date);
-            newPlayer.dailyHistory.fill(0);
-            players.set(parsedMessage.mcID, newPlayer);
-            return;
+            player = new Player(parsedMessage.mcID, null, parsedMessage.online, now);
+            player.dailyHistory.fill(0);
+            players.set(parsedMessage.mcID, player);
         }
 
         if (parsedMessage.online && !player.online) processTimeframe(player, parsedMessage.date, player.creationDate);
