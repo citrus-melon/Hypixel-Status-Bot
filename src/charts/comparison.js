@@ -13,7 +13,7 @@ const nullBarPlugin =  {
             if (value !== null && value !== undefined) continue;
             const x = xAxis.getPixelForValue(i);
             ctx.textAlign = 'center';
-            ctx.font = 'italic bold 16px Helvetica';
+            ctx.font = 'italic bold 16px Roboto ';
             ctx.fillStyle = colors.FOREGROUND;
             ctx.fillText('Untracked', x, yAxis.bottom - 20);
         }
