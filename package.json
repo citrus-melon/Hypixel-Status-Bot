@@ -1,7 +1,7 @@
 {
   "name": "hypixel-status-bot",
   "version": "1.0.0",
-  "description": "A Discord bot that track players' online status on the Hypixel Minecraft server, to send notifications and create playtime statistics",
+  "description": "A Discord bot that tracks players' online status on the Hypixel Minecraft server to provide notifications and statistics.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -24,6 +24,6 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/citrus-melon/Hypixel-Status-Bot"
   }
 }
