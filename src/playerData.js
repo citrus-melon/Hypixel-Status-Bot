@@ -8,6 +8,10 @@ let players;
 module.exports.connect = async () => {
     await client.connect();
     players = client.db(process.env.DB_NAME).collection('players');
+    await players.createIndex('discordID', {
+        unique: true,
+        partialFilterExpression: { discordID: { $type: 'string' } }
+    });
 };
 
 /**
