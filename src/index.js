@@ -32,7 +32,7 @@ class HypixelApiError extends Error {
     }
 }
 
-const tickPlayer = async (player) => {
+const tickPlayer = async (player, now, tickDelta) => {
     const response = await getJSON(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_KEY}&uuid=${player._id}`);
     if (response.success === false) throw new HypixelApiError(response.cause);
 
@@ -69,11 +69,7 @@ const tickPlayer = async (player) => {
 }
 
 const tryTickPlayer = async (player) => {
-    try {
-        await tickPlayer(player);
-    } catch (err) {
-        logError(err, `while ticking player ${player._id}`, client);
-    }
+
 }
 
 const loopStatuses = async () => {
@@ -84,7 +80,10 @@ const loopStatuses = async () => {
     const players = await playerData.findMultiple({"discordID":{$ne:null}})
         .project({online: 1, lastIncremented: 1, discordID: 1});
     
-    players.forEach(tryTickPlayer);
+    for await (player of players) {
+        tickPlayer(player, now, tickDelta)
+        .catch((err) => logError(err, `while ticking player ${player._id}`, client));
+    }
 }
 
 client.once('ready', async () => {
