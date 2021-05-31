@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "citrus-melon",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bent": "^7.3.12",
     "chart.js": "^3.2.1",
