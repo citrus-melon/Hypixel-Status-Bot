@@ -50,7 +50,7 @@ module.exports = class linkPlayer extends Command {
                 { $set: { 'discordID': discordAccount.id }, $setOnInsert: blankValues },
                 { upsert: true }
             )
-            return message.reply(`Sucessfully linked ${discordAccount.tag} to ${mcUsername}!`)
+            return message.reply(`Sucessfully linked \`${discordAccount.tag}\` to \`${mcUsername}\`!`)
         } catch (err) {
             if (err.code === 11000 && err.keyPattern.discordID) {
                 return message.reply(`\`${discordAccount.tag}\` already has a linked Minecraft account!`);
