@@ -38,7 +38,7 @@ module.exports = class monthlyChart extends Command {
             if (typeof player === 'string') return message.reply(player);
 
             chartDatasets.push({
-                adjustedHistory: playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date()),
+                history: playerHelpers.adjustMonthlyHistory(player.monthlyHistory, player.lastIncremented, new Date()),
                 username: await usernameCache.getUsernameByID(player._id)
             })
         }
