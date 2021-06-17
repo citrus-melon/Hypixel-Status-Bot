@@ -1,6 +1,6 @@
 {
   "name": "hypixel-status-bot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Discord bot that tracks players' online status on the Hypixel Minecraft server to provide notifications and statistics.",
   "main": "src/index.js",
   "scripts": {

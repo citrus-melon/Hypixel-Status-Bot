@@ -7,6 +7,7 @@ module.exports = async (error, context, client) => {
     try {
         console.error('Context: ' + context);
         console.error(error);
+        if (process.env.MUTE_ERROR_DMS) {console.log('Error DMs are muted'); return};
         const owner = await client.users.fetch(process.env.OWNER_ID);
         if (!owner) return;
         await owner.send('Unexpected error: ' + context + '\n```' + error.stack + '```');
