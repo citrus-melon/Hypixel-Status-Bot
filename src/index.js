@@ -68,10 +68,6 @@ const tickPlayer = async (player, now, tickDelta) => {
     await playerData.updateOne({_id: player._id}, updates);
 }
 
-const tryTickPlayer = async (player) => {
-
-}
-
 const loopStatuses = async () => {
     const now = new Date();
     const tickDelta = Math.floor((now.getTime() - lastTick) / 60000);
