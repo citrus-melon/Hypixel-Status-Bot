@@ -47,7 +47,7 @@ const tickPlayer = async (player, now, tickDelta) => {
         
         const catchMissingMember = (err) => {
             if (err.code !== 10007) logError(err, `while updating role for ${player.discordID}`, client);
-            playerData.updateOne({'discordID': discordID}, {$set: {discordID: null}});
+            playerData.updateOne({'discordID': player.discordID}, {$set: {discordID: null}});
         }
         notification.role(client, player.discordID, response.session.online).catch(catchMissingMember);
     }
