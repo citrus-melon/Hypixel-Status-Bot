@@ -22,7 +22,7 @@ module.exports = class Player {
         this.lastIncremented = lastIncremented || this.creationDate;
         /** @type {?number[]} dailyHistory Total playtime for the past 30 days, 0th item is latest day */
         this.dailyHistory = dailyHistory || new Array(30).fill(null);
-        if (!dailyHistory[0]) dailyHistory[0] = 0;
+        if (!this.dailyHistory[0]) this.dailyHistory[0] = 0;
         /** @type {?number[]} monthlyHistory Total playtime for each month, 0th item is latest month*/
         this.monthlyHistory = monthlyHistory || [0];
         /** @type {number[]} dailyTotals Total playtime on each day of the week, 0th is Sunday*/
